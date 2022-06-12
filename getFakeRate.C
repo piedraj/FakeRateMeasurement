@@ -14,7 +14,6 @@ const Float_t year_lumi[3] = {36.3, 41.5, 59.7};
 
 // Data members
 //------------------------------------------------------------------------------
-bool    savepng      = true;
 bool    setgrid      = true;
 bool    Wsubtraction = true;
 bool    Zsubtraction = true;
@@ -38,7 +37,9 @@ void     Cosmetics   (TH1D*       hist,
 		      Option_t*   option,
 		      TString     xtitle,
 		      TString     ytitle,
-		      Color_t     color);
+		      Color_t     color,
+		      Float_t     ymin = 0.0,
+		      Float_t     ymax = 1.0);
 
 void     DrawAllJetEt(TString     flavour,
 		      TString     variable,
@@ -81,10 +82,13 @@ TLegend* DrawLegend  (Float_t     x1,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// root -l -b -q getFakeRate.C\(2017\)
+// root -l -b -q getFakeRate.C\(2017,35,25\)
+// root -l -b -q getFakeRate.C\(2018,35,25\)
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void getFakeRate(Int_t the_year = 2017)
+void getFakeRate(Int_t   the_year     = 2017,
+		 Float_t the_elejetet = -1,
+		 Float_t the_muojetet = -1)
 {
   year = the_year;
 
@@ -94,7 +98,7 @@ void getFakeRate(Int_t the_year = 2017)
 
   gInterpreter->ExecuteMacro("PaperStyle.C");
 
-  if (savepng) gSystem->mkdir(pngdir, kTRUE);
+  gSystem->mkdir(pngdir, kTRUE);
 
   gSystem->mkdir(outputdir, kTRUE);
 
@@ -115,32 +119,55 @@ void getFakeRate(Int_t the_year = 2017)
   DrawPR("Muon", "eta", "|#eta|");
 
 
-  // Fake rate
+  // Electron fake rate
   //----------------------------------------------------------------------------
-  Float_t elejetet;
-  Float_t muojetet;
+  if (the_elejetet > 0) {
 
-  for (Int_t i=0; i<njetet; i++) {
+    WriteFR("Ele", elescale, the_elejetet);
 
-    elejetet = elejetarray[i];
-    muojetet = muojetarray[i];
+    DrawFR("Ele", "pt",  "p_{T} [GeV]", elescale, the_elejetet);
+    DrawFR("Ele", "eta", "|#eta|",      elescale, the_elejetet);
+  }
+  else {
+    for (Int_t i=0; i<njetet; i++) {
 
-    WriteFR("Ele",  elescale, elejetet);
-    WriteFR("Muon", muoscale, muojetet);
+      WriteFR("Ele", elescale, elejetarray[i]);
 
-    DrawFR("Ele",  "pt",  "p_{T} [GeV]", elescale, elejetet);
-    DrawFR("Muon", "pt",  "p_{T} [GeV]", muoscale, muojetet);
-    DrawFR("Ele",  "eta", "|#eta|",      elescale, elejetet);
-    DrawFR("Muon", "eta", "|#eta|",      muoscale, muojetet);
+      DrawFR("Ele", "pt",  "p_{T} [GeV]", elescale, elejetarray[i]);
+      DrawFR("Ele", "eta", "|#eta|",      elescale, elejetarray[i]);
+    }
+  }
+
+
+  // Muon fake rate
+  //----------------------------------------------------------------------------
+  if (the_muojetet > 0) {
+
+    WriteFR("Muon", muoscale, the_muojetet);
+
+    DrawFR("Muon", "pt",  "p_{T} [GeV]", muoscale, the_muojetet);
+    DrawFR("Muon", "eta", "|#eta|",      muoscale, the_muojetet);
+  }
+  else {
+    for (Int_t i=0; i<njetet; i++) {
+
+      WriteFR("Muon", muoscale, muojetarray[i]);
+      
+      DrawFR("Muon", "pt",  "p_{T} [GeV]", muoscale, muojetarray[i]);
+      DrawFR("Muon", "eta", "|#eta|",      muoscale, muojetarray[i]);
+    }
   }
 
 
   // Draw all fake rates together
   //----------------------------------------------------------------------------
-  DrawAllJetEt("Ele",  "pt",  "p_{T} [GeV]", elescale);
-  DrawAllJetEt("Muon", "pt",  "p_{T} [GeV]", muoscale);
-  DrawAllJetEt("Ele",  "eta", "|#eta|",      elescale);
-  DrawAllJetEt("Muon", "eta", "|#eta|",      muoscale);
+  if (the_elejetet < 0 && the_muojetet < 0) {
+  
+    DrawAllJetEt("Ele",  "pt",  "p_{T} [GeV]", elescale);
+    DrawAllJetEt("Muon", "pt",  "p_{T} [GeV]", muoscale);
+    DrawAllJetEt("Ele",  "eta", "|#eta|",      elescale);
+    DrawAllJetEt("Muon", "eta", "|#eta|",      muoscale);
+  }
 }
 
 
@@ -167,6 +194,7 @@ void DrawAllJetEt(TString flavour,
     jetet = (flavour == "Ele") ? elejetarray[i] : muojetarray[i];
 
     TString suffix = Form("%s_bin_%.0fGeV", variable.Data(), jetet);
+
 
     // Read loose and tight histograms
     //--------------------------------------------------------------------------
@@ -202,10 +230,10 @@ void DrawAllJetEt(TString flavour,
 
   // Save
   //----------------------------------------------------------------------------
-  if (savepng) canvas1->SaveAs(Form("%s/%s_FR_%s_combined.png",
-				    pngdir.Data(),
-				    flavour.Data(),
-				    variable.Data()));
+  canvas1->SaveAs(Form("%s/%s_FR_%s_combined.png",
+		       pngdir.Data(),
+		       flavour.Data(),
+		       variable.Data()));
 }
 
 
@@ -238,12 +266,13 @@ void DrawFR(TString flavour,
   TH1D* h_EWKrel_tight     = (TH1D*)h_tight_data ->Clone("h_" + flavour + "_FR_" + variable);
   TH1D* h_EWKrel_loose     = (TH1D*)h_loose_data ->Clone("h_" + flavour + "_FR_" + variable);
   
-  h_tight_correction->Add(h_tight_wjets, 1);
-  h_loose_correction->Add(h_loose_wjets, 1);
+  h_tight_correction->Add(h_tight_wjets, 1);  // tight_correction = tight_zjets + tight_wjets
+  h_loose_correction->Add(h_loose_wjets, 1);  // loose_correction = loose_zjets + loose_wjets
 
-  h_EWKrel_tight->Divide(h_tight_correction, h_tight_data);    
-  h_EWKrel_loose->Divide(h_loose_correction, h_loose_data);    
+  h_EWKrel_tight->Divide(h_tight_correction, h_tight_data);  // EWKrel_tight = tight_correction / tight_data
+  h_EWKrel_loose->Divide(h_loose_correction, h_loose_data);  // EWKrel_loose = loose_correction / loose_data
  
+
   // Prepare fake rate histograms
   //----------------------------------------------------------------------------
   TH1D* h_FR                 = (TH1D*)h_tight_data->Clone("h_" + flavour + "_FR_"                 + variable);
@@ -282,39 +311,77 @@ void DrawFR(TString flavour,
   DrawLegend(0.22, 0.845, h_FR,     "Without EWK correction");
   DrawLegend(0.22, 0.800, h_FR_EWK, "With EWK correction");
 
+  canvas1->SaveAs(Form("%s/%s_FR_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 
-  // Draw tight EWK correction
+
+  // Draw EWK correction
   //----------------------------------------------------------------------------
-  TString title2 = Form("tight %s EWK correction when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
+  TString title2 = Form("%s EWK correction when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
 
   TCanvas* canvas2 = new TCanvas(title2 + " " + variable, title2 + " " + variable);
 
   canvas2->SetGridx(setgrid);
   canvas2->SetGridy(setgrid);
 
-  Cosmetics(h_EWKrel_tight, "ep", xtitle, title2, kBlack);
+  Cosmetics(h_EWKrel_tight, "ep",      xtitle, title2, kBlack);
+  Cosmetics(h_EWKrel_loose, "ep,same", xtitle, title2, kRed+1);
+
+  DrawLegend(0.22, 0.845, h_EWKrel_tight, "tight EWK / tight data");
+  DrawLegend(0.22, 0.800, h_EWKrel_loose, "loose EWK / loose data");
 
   DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
 
+  canvas2->SaveAs(Form("%s/%s_EWKrel_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 
-  // Draw loose EWK correction
+
+  // Draw tight histograms
   //----------------------------------------------------------------------------
-  TString title3 = Form("loose %s EWK correction when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
+  TString title3 = Form("%s tight histograms when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
 
   TCanvas* canvas3 = new TCanvas(title3 + " " + variable, title3 + " " + variable);
 
   canvas3->SetGridx(setgrid);
   canvas3->SetGridy(setgrid);
 
-  Cosmetics(h_EWKrel_loose, "ep", xtitle, title3, kBlack);
+  Cosmetics(h_tight_data,  "ep",      xtitle, title3, kBlack, 0, -999);
+  Cosmetics(h_tight_zjets, "ep,same", xtitle, title3, kRed+1, 0, -999);
+  Cosmetics(h_tight_wjets, "ep,same", xtitle, title3, kBlue,  0, -999);
+  
+  if (variable.Contains("pt"))
+    {
+      DrawLegend(0.67, 0.845, h_tight_data,  "tight data");
+      DrawLegend(0.67, 0.800, h_tight_zjets, "tight Z+jets");
+      DrawLegend(0.67, 0.755, h_tight_wjets, "tight W+jets");
+    }
 
   DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
 
-  // Save
+  canvas3->SaveAs(Form("%s/%s_tight-histograms_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
+
+
+  // Draw loose histograms
   //----------------------------------------------------------------------------
-  if (savepng) canvas1->SaveAs(Form("%s/%s_FR_%s_%.0fGeV.png",           pngdir.Data(), flavour.Data(), variable.Data(), jetet));
-  if (savepng) canvas2->SaveAs(Form("%s/%s_EWKrel_tight_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
-  if (savepng) canvas3->SaveAs(Form("%s/%s_EWKrel_loose_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
+  TString title4 = Form("%s loose histograms when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
+
+  TCanvas* canvas4 = new TCanvas(title4 + " " + variable, title4 + " " + variable);
+
+  canvas4->SetGridx(setgrid);
+  canvas4->SetGridy(setgrid);
+
+  Cosmetics(h_loose_data,  "ep",      xtitle, title3, kBlack, 0, -999);
+  Cosmetics(h_loose_zjets, "ep,same", xtitle, title3, kRed+1, 0, -999);
+  Cosmetics(h_loose_wjets, "ep,same", xtitle, title3, kBlue,  0, -999);
+
+  if (variable.Contains("pt"))
+    {
+      DrawLegend(0.67, 0.845, h_loose_data,  "loose data");
+      DrawLegend(0.67, 0.800, h_loose_zjets, "loose Z+jets");
+      DrawLegend(0.67, 0.755, h_loose_wjets, "loose W+jets");
+    }
+
+  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
+
+  canvas4->SaveAs(Form("%s/%s_loose-histograms_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 }
 
 
@@ -347,10 +414,7 @@ void DrawPR(TString flavour,
 
   // Save
   //----------------------------------------------------------------------------
-  if (savepng) canvas->SaveAs(Form("%s/%s_PR_%s.png",
-				   pngdir.Data(),
-				   flavour.Data(),
-				   variable.Data()));
+  canvas->SaveAs(Form("%s/%s_PR_%s.png", pngdir.Data(), flavour.Data(), variable.Data()));
 }
 
 
@@ -504,7 +568,9 @@ void Cosmetics(TH1D*     hist,
 	       Option_t* option,
 	       TString   xtitle,
 	       TString   ytitle,
-	       Color_t   color)
+	       Color_t   color,
+	       Float_t   ymin,
+	       Float_t   ymax)
 {
   hist->Draw(option);
 
@@ -516,7 +582,8 @@ void Cosmetics(TH1D*     hist,
   hist->SetXTitle     (xtitle);
   hist->SetYTitle     (ytitle);
 
-  hist->SetAxisRange(0.0, 1.0, "Y");
+  if (ymin > -999) hist->SetMinimum(ymin);
+  if (ymax > -999) hist->SetMaximum(ymax);
 
   hist->GetXaxis()->SetTitleOffset(1.5);
   hist->GetYaxis()->SetTitleOffset(1.8);
