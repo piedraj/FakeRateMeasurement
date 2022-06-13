@@ -368,9 +368,9 @@ void DrawFR(TString flavour,
   canvas4->SetGridx(setgrid);
   canvas4->SetGridy(setgrid);
 
-  Cosmetics(h_loose_data,  "ep",      xtitle, title3, kBlack, 0, -999);
-  Cosmetics(h_loose_zjets, "ep,same", xtitle, title3, kRed+1, 0, -999);
-  Cosmetics(h_loose_wjets, "ep,same", xtitle, title3, kBlue,  0, -999);
+  Cosmetics(h_loose_data,  "ep",      xtitle, title4, kBlack, 0, -999);
+  Cosmetics(h_loose_zjets, "ep,same", xtitle, title4, kRed+1, 0, -999);
+  Cosmetics(h_loose_wjets, "ep,same", xtitle, title4, kBlue,  0, -999);
 
   if (variable.Contains("pt"))
     {
