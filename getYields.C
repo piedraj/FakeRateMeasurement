@@ -129,40 +129,40 @@ void getYields(Int_t the_year = -1)
 
   // Print muons
   //----------------------------------------------------------------------------
-  printf("     Low pt loose muons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
-  printf("     High pt loose muons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
-  printf("                    Raw %6.0f %6.0f %6.0f |",
+  printf("     [pt < 20] loose muons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
+  printf("     [pt > 20] loose muons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
+  printf("                       Raw %6.0f %6.0f %6.0f |",
 	 h_data_Muon_loose_lowpt->Integral(-1,-1),
 	 h_zjets_Muon_loose_lowpt->Integral(-1,-1),
 	 h_wjets_Muon_loose_lowpt->Integral(-1,-1));
-  printf("                     Raw %6.0f %6.0f %6.0f\n",
+  printf("                       Raw %6.0f %6.0f %6.0f\n",
 	 h_data_Muon_loose_highpt->Integral(-1,-1),
 	 h_zjets_Muon_loose_highpt->Integral(-1,-1),
 	 h_wjets_Muon_loose_highpt->Integral(-1,-1));
-  printf("               Weighted %6.0f %6.1f %6.1f |",
+  printf("                  Weighted %6.0f %6.1f %6.1f |",
 	 h_data_Muon_loose_lowpt_weighted->Integral(-1,-1),
 	 h_zjets_Muon_loose_lowpt_weighted->Integral(-1,-1),
 	 h_wjets_Muon_loose_lowpt_weighted->Integral(-1,-1));
-  printf("                Weighted %6.0f %6.1f %6.1f\n\n",
+  printf("                  Weighted %6.0f %6.1f %6.1f\n\n",
 	 h_data_Muon_loose_highpt_weighted->Integral(-1,-1),
 	 h_zjets_Muon_loose_highpt_weighted->Integral(-1,-1),
 	 h_wjets_Muon_loose_highpt_weighted->Integral(-1,-1));
 
-  printf("     Low pt tight muons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
-  printf("     High pt tight muons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
-  printf("                    Raw %6.0f %6.0f %6.0f |",
+  printf("     [pt < 20] tight muons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
+  printf("     [pt > 20] tight muons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
+  printf("                       Raw %6.0f %6.0f %6.0f |",
 	 h_data_Muon_tight_lowpt->Integral(-1,-1),
 	 h_zjets_Muon_tight_lowpt->Integral(-1,-1),
 	 h_wjets_Muon_tight_lowpt->Integral(-1,-1));
-  printf("                     Raw %6.0f %6.0f %6.0f\n",
+  printf("                       Raw %6.0f %6.0f %6.0f\n",
 	 h_data_Muon_tight_highpt->Integral(-1,-1),
 	 h_zjets_Muon_tight_highpt->Integral(-1,-1),
 	 h_wjets_Muon_tight_highpt->Integral(-1,-1));
-  printf("               Weighted %6.0f %6.1f %6.1f |",
+  printf("                  Weighted %6.0f %6.1f %6.1f |",
 	 h_data_Muon_tight_lowpt_weighted->Integral(-1,-1),
 	 h_zjets_Muon_tight_lowpt_weighted->Integral(-1,-1),
 	 h_wjets_Muon_tight_lowpt_weighted->Integral(-1,-1));
-  printf("                Weighted %6.0f %6.1f %6.1f\n\n",
+  printf("                  Weighted %6.0f %6.1f %6.1f\n\n",
 	 h_data_Muon_tight_highpt_weighted->Integral(-1,-1),
 	 h_zjets_Muon_tight_highpt_weighted->Integral(-1,-1),
 	 h_wjets_Muon_tight_highpt_weighted->Integral(-1,-1));
@@ -170,40 +170,40 @@ void getYields(Int_t the_year = -1)
 
   // Print electrons
   //----------------------------------------------------------------------------
-  printf(" Low pt loose electrons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
-  printf(" High pt loose electrons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
-  printf("                    Raw %6.0f %6.0f %6.0f |",
+  printf(" [pt < 25] loose electrons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
+  printf(" [pt > 25] loose electrons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
+  printf("                       Raw %6.0f %6.0f %6.0f |",
 	 h_data_Ele_loose_lowpt->Integral(-1,-1),
 	 h_zjets_Ele_loose_lowpt->Integral(-1,-1),
 	 h_wjets_Ele_loose_lowpt->Integral(-1,-1));
-  printf("                     Raw %6.0f %6.0f %6.0f\n",
+  printf("                       Raw %6.0f %6.0f %6.0f\n",
 	 h_data_Ele_loose_highpt->Integral(-1,-1),
 	 h_zjets_Ele_loose_highpt->Integral(-1,-1),
 	 h_wjets_Ele_loose_highpt->Integral(-1,-1));
-  printf("               Weighted %6.0f %6.1f %6.1f |",
+  printf("                  Weighted %6.0f %6.1f %6.1f |",
 	 h_data_Ele_loose_lowpt_weighted->Integral(-1,-1),
 	 h_zjets_Ele_loose_lowpt_weighted->Integral(-1,-1),
 	 h_wjets_Ele_loose_lowpt_weighted->Integral(-1,-1));
-  printf("                Weighted %6.0f %6.1f %6.1f\n\n",
+  printf("                  Weighted %6.0f %6.1f %6.1f\n\n",
 	 h_data_Ele_loose_highpt_weighted->Integral(-1,-1),
 	 h_zjets_Ele_loose_highpt_weighted->Integral(-1,-1),
 	 h_wjets_Ele_loose_highpt_weighted->Integral(-1,-1));
 
-  printf(" Low pt tight electrons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
-  printf(" High pt tight electrons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
-  printf("                    Raw %6.0f %6.0f %6.0f |",
+  printf(" [pt < 25] tight electrons %6s %6s %6s |",  "data", "Z+jets", "W+jets");
+  printf(" [pt > 25] tight electrons %6s %6s %6s\n", "data", "Z+jets", "W+jets");
+  printf("                       Raw %6.0f %6.0f %6.0f |",
 	 h_data_Ele_tight_lowpt->Integral(-1,-1),
 	 h_zjets_Ele_tight_lowpt->Integral(-1,-1),
 	 h_wjets_Ele_tight_lowpt->Integral(-1,-1));
-  printf("                     Raw %6.0f %6.0f %6.0f\n",
+  printf("                       Raw %6.0f %6.0f %6.0f\n",
 	 h_data_Ele_tight_highpt->Integral(-1,-1),
 	 h_zjets_Ele_tight_highpt->Integral(-1,-1),
 	 h_wjets_Ele_tight_highpt->Integral(-1,-1));
-  printf("               Weighted %6.0f %6.1f %6.1f |",
+  printf("                  Weighted %6.0f %6.1f %6.1f |",
 	 h_data_Ele_tight_lowpt_weighted->Integral(-1,-1),
 	 h_zjets_Ele_tight_lowpt_weighted->Integral(-1,-1),
 	 h_wjets_Ele_tight_lowpt_weighted->Integral(-1,-1));
-  printf("                Weighted %6.0f %6.1f %6.1f\n\n",
+  printf("                  Weighted %6.0f %6.1f %6.1f\n\n",
 	 h_data_Ele_tight_highpt_weighted->Integral(-1,-1),
 	 h_zjets_Ele_tight_highpt_weighted->Integral(-1,-1),
 	 h_wjets_Ele_tight_highpt_weighted->Integral(-1,-1));
