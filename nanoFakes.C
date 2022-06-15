@@ -137,6 +137,11 @@ void nanoFakes::Begin(TTree*)
 	h_Muon_tight_pt_bin[i][j][btag] = new TH1D("h_Muon_tight_pt_bin" + muonsuffix, "", nptbin, ptbins);
 	h_Ele_loose_pt_bin [i][j][btag] = new TH1D("h_Ele_loose_pt_bin"  + elesuffix,  "", nptbin, ptbins);
 	h_Ele_tight_pt_bin [i][j][btag] = new TH1D("h_Ele_tight_pt_bin"  + elesuffix,  "", nptbin, ptbins);
+
+	h_Muon_loose_pt_bin_raw[i][j][btag] = new TH1D("h_Muon_loose_pt_bin_raw" + muonsuffix, "", nptbin, ptbins);
+	h_Muon_tight_pt_bin_raw[i][j][btag] = new TH1D("h_Muon_tight_pt_bin_raw" + muonsuffix, "", nptbin, ptbins);
+	h_Ele_loose_pt_bin_raw [i][j][btag] = new TH1D("h_Ele_loose_pt_bin_raw"  + elesuffix,  "", nptbin, ptbins);
+	h_Ele_tight_pt_bin_raw [i][j][btag] = new TH1D("h_Ele_tight_pt_bin_raw"  + elesuffix,  "", nptbin, ptbins);
 	
 	h_Muon_loose_eta_bin[i][j][btag] = new TH1D("h_Muon_loose_eta_bin" + muonsuffix, "", netabin, etabins);
 	h_Muon_tight_eta_bin[i][j][btag] = new TH1D("h_Muon_tight_eta_bin" + muonsuffix, "", netabin, etabins);
@@ -155,29 +160,6 @@ void nanoFakes::Begin(TTree*)
 	h_Muon_tight_pt_m2l[i][j][btag] = new TH2D("h_Muon_tight_pt_m2l" + muonsuffix, "", 200, 0, 200, nptbin, ptbins);
 	h_Ele_loose_pt_m2l [i][j][btag] = new TH2D("h_Ele_loose_pt_m2l"  + elesuffix,  "", 200, 0, 200, nptbin, ptbins);
 	h_Ele_tight_pt_m2l [i][j][btag] = new TH2D("h_Ele_tight_pt_m2l"  + elesuffix,  "", 200, 0, 200, nptbin, ptbins);
-
-
-	// Yields histograms for getYields.C
-	//----------------------------------------------------------------------
-	h_Muon_loose_lowpt [i][j][btag] = new TH1D("h_Muon_loose_lowpt"  + muonsuffix, "", nptbin, ptbins);
-	h_Muon_loose_highpt[i][j][btag] = new TH1D("h_Muon_loose_highpt" + muonsuffix, "", nptbin, ptbins);
-	h_Muon_tight_lowpt [i][j][btag] = new TH1D("h_Muon_tight_lowpt"  + muonsuffix, "", nptbin, ptbins);
-	h_Muon_tight_highpt[i][j][btag] = new TH1D("h_Muon_tight_highpt" + muonsuffix, "", nptbin, ptbins);
-	
-	h_Muon_loose_lowpt_weighted [i][j][btag] = new TH1D("h_Muon_loose_lowpt_weighted"  + muonsuffix, "", nptbin, ptbins);
-	h_Muon_loose_highpt_weighted[i][j][btag] = new TH1D("h_Muon_loose_highpt_weighted" + muonsuffix, "", nptbin, ptbins);
-	h_Muon_tight_lowpt_weighted [i][j][btag] = new TH1D("h_Muon_tight_lowpt_weighted"  + muonsuffix, "", nptbin, ptbins);
-	h_Muon_tight_highpt_weighted[i][j][btag] = new TH1D("h_Muon_tight_highpt_weighted" + muonsuffix, "", nptbin, ptbins);
-	
-	h_Ele_loose_lowpt [i][j][btag] = new TH1D("h_Ele_loose_lowpt"  + muonsuffix, "", nptbin, ptbins);
-	h_Ele_loose_highpt[i][j][btag] = new TH1D("h_Ele_loose_highpt" + muonsuffix, "", nptbin, ptbins);
-	h_Ele_tight_lowpt [i][j][btag] = new TH1D("h_Ele_tight_lowpt"  + muonsuffix, "", nptbin, ptbins);
-	h_Ele_tight_highpt[i][j][btag] = new TH1D("h_Ele_tight_highpt" + muonsuffix, "", nptbin, ptbins);
-	
-	h_Ele_loose_lowpt_weighted [i][j][btag] = new TH1D("h_Ele_loose_lowpt_weighted"  + muonsuffix, "", nptbin, ptbins);
-	h_Ele_loose_highpt_weighted[i][j][btag] = new TH1D("h_Ele_loose_highpt_weighted" + muonsuffix, "", nptbin, ptbins);
-	h_Ele_tight_lowpt_weighted [i][j][btag] = new TH1D("h_Ele_tight_lowpt_weighted"  + muonsuffix, "", nptbin, ptbins);
-	h_Ele_tight_highpt_weighted[i][j][btag] = new TH1D("h_Ele_tight_highpt_weighted" + muonsuffix, "", nptbin, ptbins);
       }	
     }
   }
@@ -529,42 +511,7 @@ void nanoFakes::Terminate()
   // a query. It always runs on the client, it can be used to present
   // the results graphically or save the results to file.
 
-  printf("\n Writing histograms. This can take a while...\n\n");
-
-  printf(" =========== NON-WEIGHTED ========== \n");
-  printf(" ============== MUONS ============== \n"); 
-  printf(" Number of low  pt loose muons: %.0f \n", h_Muon_loose_lowpt [FR_00_QCD][3][0]->Integral(-1, -1));
-  printf(" Number of high pt loose muons: %.0f \n", h_Muon_loose_highpt[FR_00_QCD][3][0]->Integral(-1, -1));
-  printf(" Number of low  pt tight muons: %.0f \n", h_Muon_tight_lowpt [FR_00_QCD][3][0]->Integral(-1, -1));
-  printf(" Number of high pt tight muons: %.0f \n", h_Muon_tight_highpt[FR_00_QCD][3][0]->Integral(-1, -1));
-
-  printf("\n");
-
-  printf(" ============== ELECTRONS ============== \n"); 
-  printf(" Number of low  pt loose electrons: %.0f \n", h_Ele_loose_lowpt [FR_00_QCD][5][0]->Integral(-1, -1));
-  printf(" Number of high pt loose electrons: %.0f \n", h_Ele_loose_highpt[FR_00_QCD][5][0]->Integral(-1, -1));
-  printf(" Number of low  pt tight electrons: %.0f \n", h_Ele_tight_lowpt [FR_00_QCD][5][0]->Integral(-1, -1));
-  printf(" Number of high pt tight electrons: %.0f \n", h_Ele_tight_highpt[FR_00_QCD][5][0]->Integral(-1, -1));
-
-  printf("\n");
-  printf("\n");
-
-  printf(" ============= WEIGHTED ============ \n");
-  printf(" ============== MUONS ============== \n"); 
-  printf(" Number of low  pt loose muons: %.0f \n", h_Muon_loose_lowpt_weighted [FR_00_QCD][3][0]->Integral(-1, -1));
-  printf(" Number of high pt loose muons: %.0f \n", h_Muon_loose_highpt_weighted[FR_00_QCD][3][0]->Integral(-1, -1));
-  printf(" Number of low  pt tight muons: %.0f \n", h_Muon_tight_lowpt_weighted [FR_00_QCD][3][0]->Integral(-1, -1));
-  printf(" Number of high pt tight muons: %.0f \n", h_Muon_tight_highpt_weighted[FR_00_QCD][3][0]->Integral(-1, -1));
-
-  printf("\n");
-
-  printf(" ============== ELECTRONS ============== \n"); 
-  printf(" Number of low  pt loose electrons: %.0f \n", h_Ele_loose_lowpt_weighted [FR_00_QCD][5][0]->Integral(-1, -1));
-  printf(" Number of high pt loose electrons: %.0f \n", h_Ele_loose_highpt_weighted[FR_00_QCD][5][0]->Integral(-1, -1));
-  printf(" Number of low  pt tight electrons: %.0f \n", h_Ele_tight_lowpt_weighted [FR_00_QCD][5][0]->Integral(-1, -1));
-  printf(" Number of high pt tight electrons: %.0f \n", h_Ele_tight_highpt_weighted[FR_00_QCD][5][0]->Integral(-1, -1));
-
-  printf("\n");
+  printf("\n [nanoFakes::Terminate]\n\n");
 
   root_output->Write("", TObject::kOverwrite);
   root_output->Close();
@@ -626,40 +573,20 @@ void nanoFakes::FillAnalysisHistograms(int icut, int i)
       //------------------------------------------------------------------------
       h_Muon_loose_pt_eta_bin[icut][i][btag]->Fill(Lepton_pt[0], lep1eta, event_weight);
       h_Muon_loose_pt_bin    [icut][i][btag]->Fill(Lepton_pt[0], event_weight);
+      h_Muon_loose_pt_bin_raw[icut][i][btag]->Fill(Lepton_pt[0]);
       h_Muon_loose_eta_bin   [icut][i][btag]->Fill(lep1eta, event_weight);
-      
-      if (Lepton_pt[0] <= 20.)
-	{
-	  h_Muon_loose_lowpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	  h_Muon_loose_lowpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	}
-      else
-	{
-	  h_Muon_loose_highpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	  h_Muon_loose_highpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	}
-      
-      
+
+
       // Tight muons
       //------------------------------------------------------------------------
       if (muonTightWP[0] > 0.5) {
 	
 	h_Muon_tight_pt_eta_bin[icut][i][btag]->Fill(Lepton_pt[0], lep1eta, event_weight);
 	h_Muon_tight_pt_bin    [icut][i][btag]->Fill(Lepton_pt[0], event_weight);
+	h_Muon_tight_pt_bin_raw[icut][i][btag]->Fill(Lepton_pt[0]);
 	h_Muon_tight_eta_bin   [icut][i][btag]->Fill(lep1eta, event_weight);
-	
-	if (Lepton_pt[0] <= 20.)
-	  {
-	    h_Muon_tight_lowpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	    h_Muon_tight_lowpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	  }
-	else
-	  {
-	    h_Muon_tight_highpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	    h_Muon_tight_highpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	  }
       }
-      
+
     } else if (channel == e &&
 	       Jet_btagDeepB[Electron_jetIdx[Lepton_electronIdx[0]]] > btagDown &&
 	       Jet_btagDeepB[Electron_jetIdx[Lepton_electronIdx[0]]] < btagUp) {
@@ -669,38 +596,18 @@ void nanoFakes::FillAnalysisHistograms(int icut, int i)
       //------------------------------------------------------------------------
       h_Ele_loose_pt_eta_bin[icut][i][btag]->Fill(Lepton_pt[0], lep1eta, event_weight);
       h_Ele_loose_pt_bin    [icut][i][btag]->Fill(Lepton_pt[0], event_weight);
+      h_Ele_loose_pt_bin_raw[icut][i][btag]->Fill(Lepton_pt[0]);
       h_Ele_loose_eta_bin   [icut][i][btag]->Fill(lep1eta, event_weight);
-      
-      if (Lepton_pt[0] <= 25.)
-	{
-	  h_Ele_loose_lowpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	  h_Ele_loose_lowpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	}
-      else
-	{
-	  h_Ele_loose_highpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	  h_Ele_loose_highpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	}
-      
-      
+
+
       // Tight electrons
       //------------------------------------------------------------------------
       if (eleTightWP[0] > 0.5) {
 	
 	h_Ele_tight_pt_eta_bin[icut][i][btag]->Fill(Lepton_pt[0], lep1eta, event_weight);
 	h_Ele_tight_pt_bin    [icut][i][btag]->Fill(Lepton_pt[0], event_weight);
+	h_Ele_tight_pt_bin_raw[icut][i][btag]->Fill(Lepton_pt[0]);
 	h_Ele_tight_eta_bin   [icut][i][btag]->Fill(lep1eta, event_weight);
-	
-	if (Lepton_pt[0] <= 25.)
-	  {
-	    h_Ele_tight_lowpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	    h_Ele_tight_lowpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	  }
-	else
-	  {
-	    h_Ele_tight_highpt         [icut][i][btag]->Fill(Lepton_pt[0]);
-	    h_Ele_tight_highpt_weighted[icut][i][btag]->Fill(Lepton_pt[0], event_weight);
-	  }
       }
     }
   }

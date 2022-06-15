@@ -111,6 +111,11 @@ class nanoFakes : public TSelector
   TH1D* h_Ele_loose_pt_bin [ncutFR][njetet][nbtag];
   TH1D* h_Ele_tight_pt_bin [ncutFR][njetet][nbtag];
 
+  TH1D* h_Muon_loose_pt_bin_raw[ncutFR][njetet][nbtag];
+  TH1D* h_Muon_tight_pt_bin_raw[ncutFR][njetet][nbtag];
+  TH1D* h_Ele_loose_pt_bin_raw [ncutFR][njetet][nbtag];
+  TH1D* h_Ele_tight_pt_bin_raw [ncutFR][njetet][nbtag];
+
   TH1D* h_Muon_loose_eta_bin[ncutFR][njetet][nbtag];
   TH1D* h_Muon_tight_eta_bin[ncutFR][njetet][nbtag];
   TH1D* h_Ele_loose_eta_bin [ncutFR][njetet][nbtag];
@@ -128,28 +133,6 @@ class nanoFakes : public TSelector
   TH2D* h_Muon_tight_pt_m2l[ncutFR][njetet][nbtag];
   TH2D* h_Ele_loose_pt_m2l [ncutFR][njetet][nbtag];
   TH2D* h_Ele_tight_pt_m2l [ncutFR][njetet][nbtag];
-
-  // Yields histograms for getYields.C
-  //----------------------------------------------------------------------------
-  TH1D* h_Muon_loose_lowpt [ncutFR][njetet][nbtag];
-  TH1D* h_Muon_loose_highpt[ncutFR][njetet][nbtag];
-  TH1D* h_Muon_tight_lowpt [ncutFR][njetet][nbtag];
-  TH1D* h_Muon_tight_highpt[ncutFR][njetet][nbtag];
-
-  TH1D* h_Muon_loose_lowpt_weighted [ncutFR][njetet][nbtag];
-  TH1D* h_Muon_loose_highpt_weighted[ncutFR][njetet][nbtag];
-  TH1D* h_Muon_tight_lowpt_weighted [ncutFR][njetet][nbtag];
-  TH1D* h_Muon_tight_highpt_weighted[ncutFR][njetet][nbtag];
-
-  TH1D* h_Ele_loose_lowpt [ncutFR][njetet][nbtag];
-  TH1D* h_Ele_loose_highpt[ncutFR][njetet][nbtag];
-  TH1D* h_Ele_tight_lowpt [ncutFR][njetet][nbtag];
-  TH1D* h_Ele_tight_highpt[ncutFR][njetet][nbtag];
-
-  TH1D* h_Ele_loose_lowpt_weighted [ncutFR][njetet][nbtag];
-  TH1D* h_Ele_loose_highpt_weighted[ncutFR][njetet][nbtag];
-  TH1D* h_Ele_tight_lowpt_weighted [ncutFR][njetet][nbtag];
-  TH1D* h_Ele_tight_highpt_weighted[ncutFR][njetet][nbtag];
 
 
   // Prompt rate histograms
