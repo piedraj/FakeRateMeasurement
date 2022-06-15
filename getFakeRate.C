@@ -82,13 +82,16 @@ TLegend* DrawLegend  (Float_t     x1,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
+// root -l -b -q getFakeRate.C\(2017,-1,-1\)
+// root -l -b -q getFakeRate.C\(2018,-1,-1\)
+//
 // root -l -b -q getFakeRate.C\(2017,35,25\)
 // root -l -b -q getFakeRate.C\(2018,35,25\)
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void getFakeRate(Int_t   the_year     = 2017,
-		 Float_t the_elejetet = -1,
-		 Float_t the_muojetet = -1)
+		 Float_t the_elejetet = 35,
+		 Float_t the_muojetet = 25)
 {
   year = the_year;
 
@@ -257,6 +260,40 @@ void DrawFR(TString flavour,
   TH1D* h_tight_data  = (TH1D*)dataFR ->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix);
   TH1D* h_tight_zjets = (TH1D*)zjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix);
   TH1D* h_tight_wjets = (TH1D*)wjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix);
+
+
+  // Debug
+  //----------------------------------------------------------------------------
+  if (variable.EqualTo("pt"))
+    {
+      TString suffix_raw = Form("%s_bin_raw_%.0fGeV", variable.Data(), jetet);
+
+      TH1D* h_loose_data_raw  = (TH1D*)dataFR ->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_loose_" + suffix_raw);
+      TH1D* h_loose_zjets_raw = (TH1D*)zjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_loose_" + suffix_raw);
+      TH1D* h_loose_wjets_raw = (TH1D*)wjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_loose_" + suffix_raw);
+      TH1D* h_tight_data_raw  = (TH1D*)dataFR ->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix_raw);
+      TH1D* h_tight_zjets_raw = (TH1D*)zjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix_raw);
+      TH1D* h_tight_wjets_raw = (TH1D*)wjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix_raw);
+
+      printf("\n  %d W+jets %s %s when jet pt > %.0f GeV\n\n",
+	     year, flavour.Data(), variable.Data(), jetet);
+
+      printf("  %s bin LOOSE  raw weight | TIGHT   raw weight\n",
+	     variable.Data());
+
+      for (Int_t ibin=1; ibin<=h_loose_data->GetNbinsX(); ibin++) {
+
+	printf(" [%.0f,%.0f]      %5.0f  %.3f |       %5.0f  %.3f\n",
+	       h_loose_wjets->GetBinLowEdge(ibin),
+	       h_loose_wjets->GetBinLowEdge(ibin+1),
+	       h_loose_wjets_raw->GetBinContent(ibin),
+	       h_loose_wjets->GetBinContent(ibin) / h_loose_wjets_raw->GetBinContent(ibin),
+	       h_tight_wjets_raw->GetBinContent(ibin),
+	       h_tight_wjets->GetBinContent(ibin) / h_tight_wjets_raw->GetBinContent(ibin));
+      }
+      
+      printf("\n");
+    }
 
 
   // Make EWK correction histograms
