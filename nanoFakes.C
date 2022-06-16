@@ -305,9 +305,11 @@ Bool_t nanoFakes::Process(Long64_t entry)
   //----------------------------------------------------------------------------
   bool passTrigger = false;
 
+  if (ismc) event_weight = (*baseW/1e3) * (*puWeight) * (*Generator_weight);
+
+  if (event_weight > 2.) return kTRUE;  // Debug
+
   if (ismc) {
-    
-    event_weight = (*baseW/1e3) * (*puWeight) * (*Generator_weight);
 
     if (channel == m) {
       
