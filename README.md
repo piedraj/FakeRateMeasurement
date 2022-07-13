@@ -41,6 +41,11 @@ Check (and edit if needed) the following files.
 
 # Submit jobs
 
+### 2016
+
+    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016
+    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016
+
 ### 2017
 
     python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL17_106x_nAODv9_Full2017v9/MCl1loose2017v9__fakeSelKinMC/ -y 2017
@@ -115,3 +120,4 @@ And the results should appear here,
 
    * The jet pt thresholds for electrons are 35 GeV for 0-jet, 1-jet and 2-jets.
    * The jet pt thresholds for muons are 20 GeV for 0-jet, 25 GeV for 1-jet, and 35 GeV for 2-jets.
+
