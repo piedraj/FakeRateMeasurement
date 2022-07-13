@@ -41,6 +41,8 @@ Check (and edit if needed) the following files.
 
 # Submit jobs
 
+**2022/07/13, open issue.** The option `-d` below does not seem to fully work. It helps (at least for 2017 and 2018) choosing between data and MC, but the full path is read from `runNanoFakes.C`.
+
 ### 2016
 
     python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016
