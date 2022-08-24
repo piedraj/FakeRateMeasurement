@@ -89,17 +89,25 @@ TLegend* DrawLegend  (Float_t     x1,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// root -l -b -q getFakeRate.C\(\"2016_HIPM\"\)
-// root -l -b -q getFakeRate.C\(\"2016_noHIPM\"\)
-// root -l -b -q getFakeRate.C\(\"2017\"\)
-// root -l -b -q getFakeRate.C\(\"2018\"\)
+// getFakeRate
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void getFakeRate(TString the_year     = "2017",
+void getFakeRate(TString the_year     = "1984",
 		 Float_t the_elejetet = -1,
 		 Float_t the_muojetet = -1)
 {
   year = the_year;
+
+  if (year == "1984") {
+
+    printf("\n");
+    printf(" root -l -b -q \'getFakeRate.C(\"2016_HIPM\")\'\n");
+    printf(" root -l -b -q \'getFakeRate.C(\"2016_noHIPM\")\'\n");
+    printf(" root -l -b -q \'getFakeRate.C(\"2017\")\'\n");
+    printf(" root -l -b -q \'getFakeRate.C(\"2018\")\'\n");
+    printf("\n");
+    return;
+  }
 
   if      (year.Contains("noHIPM")) year_index = 1;
   else if (year.Contains("HIPM"))   year_index = 0;

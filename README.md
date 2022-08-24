@@ -72,22 +72,9 @@ Check (and edit if needed) the following files.
 
     cd results
 
-### 2017
-
     hadd -f -k hadd_wjets.root nanoLatino_WJetsToLNu*.root
     hadd -f -k hadd_zjets.root nanoLatino_DYJetsToLL*.root
-
-2017 data can be "hadded" in one shot.
-
-    hadd -f -k hadd_data.root nanoLatino_*_Run201*.root
-
-    mkdir 2017
-    mv *.root 2017/.
-
-### 2018
-
-    hadd -f -k hadd_wjets.root nanoLatino_WJetsToLNu*.root
-    hadd -f -k hadd_zjets.root nanoLatino_DYJetsToLL*.root
+    hadd -f -k hadd_data.root  nanoLatino_*_Run201*.root
 
 For 2018 data there are too many files, and the `hadd` has to be done in two steps.
 
@@ -99,20 +86,21 @@ For 2018 data there are too many files, and the `hadd` has to be done in two ste
     rm hadd_EGamma_Run2018.root
     rm hadd_DoubleMuon_Run2018.root
 
-    mkdir 2018
-    mv *.root 2018/.
+Move the merged files to their corresponding year directory.
+
+    rm nanoLatino*
+    mkdir <year>
+    mv hadd* <year>/.
 
 # Extract the fake and prompt rates
 
-    root -l -b -q getFakeRate.C\(2017\)
-    root -l -b -q getFakeRate.C\(2018\)
+    root -l -b -q getFakeRate.C
 
 # Share on the web
 
     mkdir /afs/cern.ch/user/p/piedra/www/fakes
 
-    cp -r png/2017 /afs/cern.ch/user/p/piedra/www/fakes/.
-    cp -r png/2018 /afs/cern.ch/user/p/piedra/www/fakes/.
+    cp -r png/<year> /afs/cern.ch/user/p/piedra/www/fakes/.
 
     pushd /afs/cern.ch/user/p/piedra/www/fakes
     cp ../index.php .
