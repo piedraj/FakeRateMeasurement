@@ -14,6 +14,7 @@ const Float_t year_lumi[3] = {36.3, 41.5, 59.7};
 
 // Data members
 //------------------------------------------------------------------------------
+bool    debug        = false;
 bool    setgrid      = true;
 bool    Wsubtraction = true;
 bool    Zsubtraction = true;
@@ -264,7 +265,7 @@ void DrawFR(TString flavour,
 
   // Debug
   //----------------------------------------------------------------------------
-  if (variable.EqualTo("pt"))
+  if (debug && variable.EqualTo("pt"))
     {
       TString suffix_raw = Form("%s_bin_raw_%.0fGeV", variable.Data(), jetet);
 

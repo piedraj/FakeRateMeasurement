@@ -47,16 +47,18 @@ void nanoFakes::Begin(TTree*)
   // The tree argument is deprecated (on PROOF 0 is passed).
 
   option = GetOption();
-  printf("\n");
+
+  int year_length = 4;
+
+  if (option.find("2016_noHIPM") != std::string::npos) year_length = 11;
+  if (option.find("2016_HIPM")   != std::string::npos) year_length = 9;
+
+  year     = option.substr(0,year_length);
+  filename = option.erase(0,year_length);
 
   printf("   option: %s\n", option.c_str());
-
-  year     = option.substr(0,4);
-  filename = option.erase(0,4);
-
   printf("     year: %s\n", year.Data());
   printf(" filename: %s\n", filename.Data());
-
   printf("\n");
   
   if (!filename.Contains("Run201")) {

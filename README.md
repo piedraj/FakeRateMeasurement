@@ -43,10 +43,15 @@ Check (and edit if needed) the following files.
 
 **2022/07/13, open issue.** The option `-d` below does not seem to fully work. It helps (at least for 2017 and 2018) choosing between data and MC, but the full path is read from `runNanoFakes.C`.
 
-### 2016
+### 2016_noHIPM
 
-    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016
-    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016
+    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_noHIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/ -y 2016_noHIPM
+    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016_noHIPM
+
+### 2016_HIPM
+
+    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_HIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/ -y 2016_HIPM
+    python submitJobs.py -d /eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/ -y 2016_HIPM
 
 ### 2017
 

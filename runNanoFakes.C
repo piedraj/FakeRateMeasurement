@@ -19,11 +19,15 @@ std::string to_string(int i)
 
 void runNanoFakes(TString year = "2017", TString filename = "NONE")
 {
-  if (year == "2016")
+  if (year == "2016_noHIPM")
     {
-      path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer16_102X_nAODv5_Full2016v6/MCl1loose2016v6__MCCorr2016v6/";
+      path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_noHIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/";
       path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";
-    //path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";
+    }
+  else if (year == "2016_HIPM")
+    {
+      path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_HIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/";
+      path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";
     }
   else if (year == "2017")
     {
@@ -37,7 +41,7 @@ void runNanoFakes(TString year = "2017", TString filename = "NONE")
     }
   else
     {
-      printf(" The year should be either 2016, 2017 or 2018\n");
+      printf(" The year should be either 2016_noHIPM, 2016_HIPM, 2017 or 2018\n");
       return;
     }
 
