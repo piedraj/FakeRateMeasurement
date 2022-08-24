@@ -2,7 +2,7 @@
 //
 //      Target: Produce fake and prompt rates
 //      Authors: Jonatan Piedra, Cedric Prieels
-//      Last update: May 10th, 2019
+//      Last update: August 24th, 2022
 //
 //------------------------------------------------------------------------------
 TString path_mc   = "";
