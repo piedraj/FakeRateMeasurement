@@ -9,7 +9,12 @@ const Float_t colors     [njetet] = {kRed, kRed+1, kRed+2, kRed+3, kRed+4, kRed+
 const Float_t muoscale = -1.;
 const Float_t elescale = -1.;
 
-const Float_t year_lumi[3] = {36.3, 41.5, 59.7};
+const Float_t year_lumi[4] = {
+  19.5,  // 2016_HIPM
+  17.0,  // 2016_noHIPM
+  41.5,  // 2017
+  59.7   // 2018
+};
 
 
 // Data members
@@ -24,8 +29,9 @@ TFile*  wjetsFR;
 TFile*  zjetsFR;
 TFile*  zjetsPR;
 
-Int_t   year;
+Int_t   year_index;
 
+TString year;
 TString inputdir;
 TString outputdir;
 TString pngdir;
@@ -83,22 +89,30 @@ TLegend* DrawLegend  (Float_t     x1,
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-// root -l -b -q getFakeRate.C\(2017,-1,-1\)
-// root -l -b -q getFakeRate.C\(2018,-1,-1\)
-//
-// root -l -b -q getFakeRate.C\(2017,35,25\)
-// root -l -b -q getFakeRate.C\(2018,35,25\)
+// root -l -b -q getFakeRate.C\(\"2016_HIPM\"\)
+// root -l -b -q getFakeRate.C\(\"2016_noHIPM\"\)
+// root -l -b -q getFakeRate.C\(\"2017\"\)
+// root -l -b -q getFakeRate.C\(\"2018\"\)
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void getFakeRate(Int_t   the_year     = 2017,
-		 Float_t the_elejetet = 35,
-		 Float_t the_muojetet = 25)
+void getFakeRate(TString the_year     = "2017",
+		 Float_t the_elejetet = -1,
+		 Float_t the_muojetet = -1)
 {
   year = the_year;
 
-  inputdir  = Form("results/%d",  year);
-  outputdir = Form("fakerate/%d", year);
-  pngdir    = Form("png/%d",      year);
+  if      (year.Contains("noHIPM")) year_index = 1;
+  else if (year.Contains("HIPM"))   year_index = 0;
+  else if (year.Contains("2017"))   year_index = 2;
+  else if (year.Contains("2018"))   year_index = 3;
+  else {
+    printf("\n Wrong year format\n");
+    return;
+  }
+
+  inputdir  = Form("results/%s",  year.Data());
+  outputdir = Form("fakerate/%s", year.Data());
+  pngdir    = Form("png/%s",      year.Data());
 
   gInterpreter->ExecuteMacro("PaperStyle.C");
 
@@ -276,8 +290,8 @@ void DrawFR(TString flavour,
       TH1D* h_tight_zjets_raw = (TH1D*)zjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix_raw);
       TH1D* h_tight_wjets_raw = (TH1D*)wjetsFR->Get(btagDirectory+"FR/00_QCD/h_" + flavour + "_tight_" + suffix_raw);
 
-      printf("\n  %d W+jets %s %s when jet pt > %.0f GeV\n\n",
-	     year, flavour.Data(), variable.Data(), jetet);
+      printf("\n  %s W+jets %s %s when jet pt > %.0f GeV\n\n",
+	     year.Data(), flavour.Data(), variable.Data(), jetet);
 
       printf("  %s bin LOOSE  raw weight | TIGHT   raw weight\n",
 	     variable.Data());
@@ -344,7 +358,7 @@ void DrawFR(TString flavour,
   Cosmetics(h_FR,     "ep",      xtitle, title1, kBlack);
   Cosmetics(h_FR_EWK, "ep,same", xtitle, title1, kRed+1);
 
-  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
+  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year_index]));
 
   DrawLegend(0.22, 0.845, h_FR,     "Without EWK correction");
   DrawLegend(0.22, 0.800, h_FR_EWK, "With EWK correction");
@@ -367,7 +381,7 @@ void DrawFR(TString flavour,
   DrawLegend(0.22, 0.845, h_EWKrel_tight, "tight EWK / tight data");
   DrawLegend(0.22, 0.800, h_EWKrel_loose, "loose EWK / loose data");
 
-  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
+  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year_index]));
 
   canvas2->SaveAs(Form("%s/%s_EWKrel_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 
@@ -392,7 +406,7 @@ void DrawFR(TString flavour,
       DrawLegend(0.67, 0.755, h_tight_wjets, "tight W+jets");
     }
 
-  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
+  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year_index]));
 
   canvas3->SaveAs(Form("%s/%s_tight-histograms_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 
@@ -417,7 +431,7 @@ void DrawFR(TString flavour,
       DrawLegend(0.67, 0.755, h_loose_wjets, "loose W+jets");
     }
 
-  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year-2016]));
+  DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year_index]));
 
   canvas4->SaveAs(Form("%s/%s_loose-histograms_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 }

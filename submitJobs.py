@@ -22,7 +22,7 @@ def submit():
     parser.add_option('-d', '--directory', action='store', type=str, dest='inputDir', default='', help='Name of the directory where the samples can be found')
     parser.add_option('-o', '--output', action='store', type=str, dest='outputDir', default=os.getcwd()+'/jobs/', help='Output directory')
     parser.add_option('-w', '--work', action='store', type=str, dest='workDir', default=os.getcwd(), help='Working directory')
-    parser.add_option('-y', '--year', action='store', type=str, dest='year', default="", help='Year of the dataset considered (2016_noHIPM, 2016_HIPM, 2017 or 2018)')
+    parser.add_option('-y', '--year', action='store', type=str, dest='year', default="", help='Year of the dataset considered (2016_HIPM, 2016_noHIPM, 2017 or 2018)')
     parser.add_option('-t', '--test', action='store_true', dest='doNotSend', default=False, help='Do not send the jobs to the queue, to be used for testing')
     parser.add_option('-r', '--resubmit', action='store_true', dest='resubmit', default=False, help='Resubmit only the jobs found in the directory but not in results')
     (opts, args) = parser.parse_args()
@@ -50,7 +50,7 @@ def submit():
     if year == "":
         print "BE CAREFUL! You did not introduce any year, so 2017 files are considered by default"
         year = "2017"
-    elif year != "2016_noHIPM" and year != "2016_HIPM" and year != "2017" and year != "2018":
+    elif year != "2016_HIPM" and year != "2016_noHIPM" and year != "2017" and year != "2018":
         print "The year given does not seem to be valid"
         return
 
@@ -77,11 +77,11 @@ def submit():
 
     for sample in samples:
 
-        if year == "2016_noHIPM":
+        if year == "2016_HIPM":
             if ("DYJetsToLL_M-10to50__" in sample) or ("DYJetsToLL_M-50-LO__" in sample) or ("WJetsToLNu-LO__" in sample) or ("DoubleMuon" in sample) or ("DoubleEG" in sample): 
                 if resubmit is False or not os.path.exists('results/'+sample):
                     jobs.append(sample)
-        elif year == "2016_HIPM":
+        elif year == "2016_noHIPM":
             if ("DYJetsToLL_M-10to50__" in sample) or ("DYJetsToLL_M-50-LO__" in sample) or ("WJetsToLNu-LO__" in sample) or ("DoubleMuon" in sample) or ("DoubleEG" in sample): 
                 if resubmit is False or not os.path.exists('results/'+sample):
                     jobs.append(sample)

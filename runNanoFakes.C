@@ -19,15 +19,15 @@ std::string to_string(int i)
 
 void runNanoFakes(TString year = "2017", TString filename = "NONE")
 {
-  if (year == "2016_noHIPM")
-    {
-      path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_noHIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/";
-      path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";
-    }
-  else if (year == "2016_HIPM")
+  if (year == "2016_HIPM")
     {
       path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_HIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/";
       path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";
+    }
+  else if (year == "2016_noHIPM")
+    {
+      path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_noHIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/";
+      path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_noHIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";
     }
   else if (year == "2017")
     {

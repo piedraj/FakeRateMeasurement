@@ -76,7 +76,7 @@ void nanoFakes::Begin(TTree*)
   TH1::SetDefaultSumw2();
 
   // Prescale definition depending on the year
-  if (year == "2016")
+  if (year == "2016_HIPM" || year == "2016_noHIPM")
     {
       eleLowPtPrescale   = 14.851;
       eleHighPtPrescale  = 62.808;
