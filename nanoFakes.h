@@ -220,11 +220,11 @@ class nanoFakes : public TSelector
 
   // 2017 and 2018 (pair 3)
   TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight_HWWW_tthmva_80"};
-  TTreeReaderArray<Int_t> eleTightWP  = {fReader, " Lepton_isTightElectron_mvaFall17V2Iso_WP90_SS_tthmva_70"};
+  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90_SS_tthmva_70"};
 
   // 2017 and 2018 (pair 4)
   //TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight_HWWW"};
-  //TTreeReaderArray<Int_t> eleTightWP  = {fReader, " Lepton_isTightElectron_mvaFall17V2Iso_WP90_SS"};
+  //TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90_SS"};
 
 
   nanoFakes(TTree * /*tree*/ =0) { }
