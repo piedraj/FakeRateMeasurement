@@ -48,6 +48,8 @@ void nanoFakes::Begin(TTree*)
 
   option = GetOption();
 
+  printf("   option: %s\n", option.c_str());
+
   int year_length = 4;
 
   if (option.find("2016_noHIPM") != std::string::npos) year_length = 11;
@@ -56,7 +58,6 @@ void nanoFakes::Begin(TTree*)
   year     = option.substr(0,year_length);
   filename = option.erase(0,year_length);
 
-  printf("   option: %s\n", option.c_str());
   printf("     year: %s\n", year.Data());
   printf(" filename: %s\n", filename.Data());
   printf("\n");
@@ -78,6 +79,8 @@ void nanoFakes::Begin(TTree*)
   // Prescale definition depending on the year
   if (year == "2016_HIPM")
     {
+      printf(" Reading %s prescales\n\n", year.Data());
+
       eleLowPtPrescale   = 0.53 * 14.851;
       eleHighPtPrescale  = 0.53 * 62.808;
       muonLowPtPrescale  = 0.53 * 7.801;
@@ -85,6 +88,8 @@ void nanoFakes::Begin(TTree*)
     }
   else if (year == "2016_noHIPM")
     {
+      printf(" Reading %s prescales\n\n", year.Data());
+
       eleLowPtPrescale   = 0.47 * 14.851;
       eleHighPtPrescale  = 0.47 * 62.808;
       muonLowPtPrescale  = 0.47 * 7.801;
@@ -92,6 +97,8 @@ void nanoFakes::Begin(TTree*)
     }
   else if(year == "2017")
     {
+      printf(" Reading %s prescales\n\n", year.Data());
+
       eleLowPtPrescale   = 3.973;  // Ele8
       //eleLowPtPrescale = 27.699;  // Ele12
       eleHighPtPrescale  = 43.469;
@@ -100,6 +107,8 @@ void nanoFakes::Begin(TTree*)
     }
   else if(year == "2018")
     {
+      printf(" Reading %s prescales\n\n", year.Data());
+
       eleLowPtPrescale   = 6.412;  // Ele8
       //eleLowPtPrescale = 38.849;  // Ele12
       eleHighPtPrescale  = 38.906;

@@ -194,9 +194,9 @@ class nanoFakes : public TSelector
 
   //Different electron and muon working points
   //----------------------------------------------------------------------------
-  // DONE // 2016 (pair 1)
-  // DONE // TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight80x_tthmva_80"};
-  // DONE // TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90"};
+  // 2016 (pair 1)
+  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight80x_tthmva_80"};
+  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90"};
 
   // DONE // 2016 (pair 2)
   // DONE // TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight80x"};
