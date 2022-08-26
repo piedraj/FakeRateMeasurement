@@ -143,7 +143,8 @@ void getFakeRate(TString the_year      = "1984",
 
   gSystem->mkdir(pngdir, kTRUE);
 
-  gSystem->mkdir(outputdir, kTRUE);
+  gSystem->mkdir(outputdir + "/" + muon_wp, kTRUE);
+  gSystem->mkdir(outputdir + "/" + ele_wp,  kTRUE);
 
   dataFR  = new TFile (inputdir + "/hadd_data.root",  "read");
   wjetsFR = new TFile (inputdir + "/hadd_wjets.root", "read");
@@ -543,8 +544,12 @@ void WriteFR(TString flavour,
 
   // Write
   //----------------------------------------------------------------------------
+  TString outputdir_wp = (flavour.EqualsTo("Muon")) ? muon_wp : ele_wp;
+
+  outputdir_wp = outputdir + "/" + outputdir_wp;
+
   TFile *file = new TFile(Form("%s/%sFR_jet%0.f.root",
-			       outputdir.Data(),
+			       outputdir_wp.Data(),
 			       flavour.Data(),
 			       jetet),
 			  "recreate");
@@ -566,6 +571,10 @@ void WriteFR(TString flavour,
 //------------------------------------------------------------------------------
 void WritePR(TString flavour)
 {
+  TString outputdir_wp = (flavour.EqualsTo("Muon")) ? muon_wp : ele_wp;
+
+  outputdir_wp = outputdir + "/" + outputdir_wp;
+
   TH2D* h_loose_zjets = (TH2D*)zjetsPR->Get("PR/00/h_" + flavour + "_loose_pt_eta_PR");
   TH2D* h_tight_zjets = (TH2D*)zjetsPR->Get("PR/00/h_" + flavour + "_tight_pt_eta_PR");
 
@@ -577,7 +586,7 @@ void WritePR(TString flavour)
   // Write
   //----------------------------------------------------------------------------
   TFile* file = new TFile(Form("%s/%sPR.root",
-			       outputdir.Data(),
+			       outputdir_wp.Data(),
 			       flavour.Data()),
 			  "recreate");
 
