@@ -76,12 +76,19 @@ void nanoFakes::Begin(TTree*)
   TH1::SetDefaultSumw2();
 
   // Prescale definition depending on the year
-  if (year == "2016_HIPM" || year == "2016_noHIPM")
+  if (year == "2016_HIPM")
     {
-      eleLowPtPrescale   = 14.851;
-      eleHighPtPrescale  = 62.808;
-      muonLowPtPrescale  = 7.801;
-      muonHighPtPrescale = 216.748;
+      eleLowPtPrescale   = 0.53 * 14.851;
+      eleHighPtPrescale  = 0.53 * 62.808;
+      muonLowPtPrescale  = 0.53 * 7.801;
+      muonHighPtPrescale = 0.53 * 216.748;
+    }
+  else if (year == "2016_noHIPM")
+    {
+      eleLowPtPrescale   = 0.47 * 14.851;
+      eleHighPtPrescale  = 0.47 * 62.808;
+      muonLowPtPrescale  = 0.47 * 7.801;
+      muonHighPtPrescale = 0.47 * 216.748;
     }
   else if(year == "2017")
     {
