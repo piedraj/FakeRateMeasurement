@@ -544,7 +544,7 @@ void WriteFR(TString flavour,
 
   // Write
   //----------------------------------------------------------------------------
-  TString outputdir_wp = (flavour.EqualsTo("Muon")) ? muon_wp : ele_wp;
+  TString outputdir_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
   outputdir_wp = outputdir + "/" + outputdir_wp;
 
@@ -571,7 +571,7 @@ void WriteFR(TString flavour,
 //------------------------------------------------------------------------------
 void WritePR(TString flavour)
 {
-  TString outputdir_wp = (flavour.EqualsTo("Muon")) ? muon_wp : ele_wp;
+  TString outputdir_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
   outputdir_wp = outputdir + "/" + outputdir_wp;
 
