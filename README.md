@@ -98,18 +98,16 @@ Move the merged files to their corresponding year directory.
 
 # Share on the web
 
-    mkdir /afs/cern.ch/user/p/piedra/www/fakes
+    cp -r png /afs/cern.ch/user/p/piedra/www/fakerate
 
-    cp -r png/<year> /afs/cern.ch/user/p/piedra/www/fakes/.
-
-    pushd /afs/cern.ch/user/p/piedra/www/fakes
+    pushd /afs/cern.ch/user/p/piedra/www/fakerate
     cp ../index.php .
     find . -type d -exec cp index.php {} \;
     popd
 
 And the results should appear here,
 
-    https://piedra.web.cern.ch/piedra/fakes/
+    https://piedra.web.cern.ch/piedra/
 
 # Some relevant physics
 
