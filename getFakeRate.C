@@ -19,7 +19,7 @@ const Float_t year_lumi[4] = {
 
 // Data members
 //------------------------------------------------------------------------------
-bool    debug        = false;
+bool    debug        = true;
 bool    setgrid      = true;
 bool    Wsubtraction = true;
 bool    Zsubtraction = true;
