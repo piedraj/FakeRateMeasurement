@@ -105,7 +105,7 @@ Move the merged files to their corresponding year directory.
     find . -type d -exec cp index.php {} \;
     popd
 
-And the results should appear here,
+And the results should appear [here](https://piedra.web.cern.ch/piedra/),
 
     https://piedra.web.cern.ch/piedra/
 
