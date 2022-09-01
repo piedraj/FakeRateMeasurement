@@ -90,10 +90,10 @@ void nanoFakes::Begin(TTree*)
     {
       printf(" Reading %s prescales\n\n", year.Data());
 
-      eleLowPtPrescale   = 0.47 * 14.851;
-      eleHighPtPrescale  = 0.47 * 62.808;
-      muonLowPtPrescale  = 0.47 * 7.801;
-      muonHighPtPrescale = 0.47 * 216.748;
+      eleLowPtPrescale   = 0.3 * 0.47 * 14.851;
+      eleHighPtPrescale  = 0.3 * 0.47 * 62.808;
+      muonLowPtPrescale  = 0.3 * 0.47 * 7.801;
+      muonHighPtPrescale = 0.3 * 0.47 * 216.748;
     }
   else if(year == "2017")
     {
