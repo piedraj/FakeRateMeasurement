@@ -81,38 +81,38 @@ void nanoFakes::Begin(TTree*)
     {
       printf(" Reading %s prescales\n\n", year.Data());
 
-      eleLowPtPrescale   = 0.53 * 14.851;
-      eleHighPtPrescale  = 0.53 * 62.808;
-      muonLowPtPrescale  = 0.53 * 7.801;
-      muonHighPtPrescale = 0.53 * 216.748;
+      eleLowPtPrescale   =  11.028;  //  14.851;
+      eleHighPtPrescale  =  52.768;  //  62.808;
+      muonLowPtPrescale  =   6.584;  //   7.801;
+      muonHighPtPrescale = 192.064;  // 216.748;
     }
   else if (year == "2016_noHIPM")
     {
       printf(" Reading %s prescales\n\n", year.Data());
 
-      eleLowPtPrescale   = 0.3 * 0.47 * 14.851;
-      eleHighPtPrescale  = 0.3 * 0.47 * 62.808;
-      muonLowPtPrescale  = 0.3 * 0.47 * 7.801;
-      muonHighPtPrescale = 0.3 * 0.47 * 216.748;
+      eleLowPtPrescale   =  3.980;  //  14.851;
+      eleHighPtPrescale  = 10.699;  //  62.808;
+      muonLowPtPrescale  =  1.297;  //   7.801;
+      muonHighPtPrescale = 26.873;  // 216.748;
     }
   else if(year == "2017")
     {
       printf(" Reading %s prescales\n\n", year.Data());
 
-      eleLowPtPrescale   = 3.973;  // Ele8
-      //eleLowPtPrescale = 27.699;  // Ele12
+      eleLowPtPrescale   =  3.973;  // Ele8
+    //eleLowPtPrescale   = 27.699;  // Ele12
       eleHighPtPrescale  = 43.469;
-      muonLowPtPrescale  = 2.903;
+      muonLowPtPrescale  =  2.903;
       muonHighPtPrescale = 65.944;
     }
   else if(year == "2018")
     {
       printf(" Reading %s prescales\n\n", year.Data());
 
-      eleLowPtPrescale   = 6.412;  // Ele8
-      //eleLowPtPrescale = 38.849;  // Ele12
+      eleLowPtPrescale   =  6.412;  // Ele8
+    //eleLowPtPrescale   = 38.849;  // Ele12
       eleHighPtPrescale  = 38.906;
-      muonLowPtPrescale  = 8.561;
+      muonLowPtPrescale  =  8.561;
       muonHighPtPrescale = 45.781;
     }
 
