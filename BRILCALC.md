@@ -20,37 +20,26 @@ Trigger bits and [luminosity](https://github.com/latinos/LatinoAnalysis/blob/UL_
 
 # 2016_HIPM
 
-The luminosity for low pt electrons is **11.028/pb**.
+| Trigger           | Luminosity [1/pb] |
+| :---              |    ---: |
+| low pt electrons  |  11.028 |
+| high pt electrons |  52.768 |
+| low pt muons      |   6.584 |
+| high pt muons     | 192.064 |
 
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
-
-The luminosity for high pt electrons is **52.768/pb**.
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
-
-The luminosity for low pt muons is **6.584/pb**.
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Mu8_TrkIsoVVL_v*"
-
-
-The luminosity for high pt muons is **192.064/pb**.
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Mu17_TrkIsoVVL_v*"
 
 # 2016_noHIPM
 
-The luminosity for low pt electrons is **3.980/pb**.
+The luminosity for low pt electrons is 3.980 /pb.
+The luminosity for high pt electrons is 10.699 /pb.
+The luminosity for low pt muons is 1.297 /pb.
+The luminosity for high pt muons is 26.873 /pb.
 
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
-
-The luminosity for high pt electrons is **10.699/pb**.
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
-
-The luminosity for low pt muons is **1.297/pb**.
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Mu8_TrkIsoVVL_v*"
-
-The luminosity for high pt muons is **26.873/pb**.
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Mu17_TrkIsoVVL_v*"
