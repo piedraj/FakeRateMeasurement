@@ -20,26 +20,28 @@ Trigger bits and [luminosity](https://github.com/latinos/LatinoAnalysis/blob/UL_
 
 # 2016_HIPM
 
-| Trigger           | Luminosity [1/pb] |
-| :---              |    ---: |
-| low pt electrons  |  11.028 |
-| high pt electrons |  52.768 |
-| low pt muons      |   6.584 |
-| high pt muons     | 192.064 |
-
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Mu8_TrkIsoVVL_v*"
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_HIPM_Collisions16_JSON.txt --hltpath "HLT_Mu17_TrkIsoVVL_v*"
 
-# 2016_noHIPM
+| Trigger                                  | Luminosity [1/pb] |
+| :---                                     |              ---: |
+| HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30 |            11.028 |
+| HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30 |            52.768 |
+| HLT_Mu8_TrkIsoVVL                        |             6.584 |
+| HLT_Mu17_TrkIsoVVL                       |           192.064 |
 
-The luminosity for low pt electrons is 3.980 /pb.
-The luminosity for high pt electrons is 10.699 /pb.
-The luminosity for low pt muons is 1.297 /pb.
-The luminosity for high pt muons is 26.873 /pb.
+# 2016_noHIPM
 
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_v*"
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Mu8_TrkIsoVVL_v*"
     brilcalc lumi --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_PHYSICS.json -u /pb -i Cert_271036-284044_13TeV_Legacy2016_noHIPM_Collisions16_JSON.txt --hltpath "HLT_Mu17_TrkIsoVVL_v*"
+
+| Trigger                                  | Luminosity [1/pb] |
+| :---                                     |              ---: |
+| HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30 |             3.980 |
+| HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30 |            10.699 |
+| HLT_Mu8_TrkIsoVVL                        |             1.297 |
+| HLT_Mu17_TrkIsoVVL                       |            26.873 |
