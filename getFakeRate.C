@@ -95,8 +95,8 @@ TLegend* DrawLegend  (Float_t     x1,
 // getFakeRate
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void getFakeRate(TString the_year      = "1984",
-		 TString the_leptondir = "cut_Tight80x_tthmva_80__mvaFall17V2Iso_WP90",
+void getFakeRate(TString the_year      = "2016_HIPM",
+		 TString the_leptondir = "cut_Tight80x__mvaFall17V2Iso_WP90_tthmva_70",
 		 Float_t the_elejetet  = 35,
 		 Float_t the_muojetet  = 25)
 {
@@ -404,8 +404,8 @@ void DrawFR(TString flavour,
   canvas2->SetGridx(setgrid);
   canvas2->SetGridy(setgrid);
 
-  Cosmetics(h_EWKrel_tight, "ep",      xtitle, title2, kBlack);
-  Cosmetics(h_EWKrel_loose, "ep,same", xtitle, title2, kRed+1);
+  Cosmetics(h_EWKrel_tight, "ep",      xtitle, title2, kBlack, 0.0, 1.6);
+  Cosmetics(h_EWKrel_loose, "ep,same", xtitle, title2, kRed+1, 0.0, 1.6);
 
   DrawLegend(0.22, 0.845, h_EWKrel_tight, "tight EWK / tight data");
   DrawLegend(0.22, 0.800, h_EWKrel_loose, "loose EWK / loose data");
