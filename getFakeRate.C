@@ -316,21 +316,21 @@ void DrawFR(TString flavour,
       TH1D* h_loose_zjets_raw = (TH1D*)zjetsFR->Get(btagdir + "FR/00_QCD/h_" + flavour + "_loose_" + suffix_raw);
       TH1D* h_tight_zjets_raw = (TH1D*)zjetsFR->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix_raw);
 
-      printf("\n  %s W+jets %s %s when jet pt > %.0f GeV\n\n",
+      printf("\n  %s Z+jets %s %s when jet pt > %.0f GeV\n\n",
 	     year.Data(), flavour.Data(), variable.Data(), jetet);
 
-      printf("  %s bin LOOSE  raw weight | TIGHT   raw weight\n",
+      printf("  %s bin LOOSE   raw weight | TIGHT    raw weight\n",
 	     variable.Data());
 
       for (Int_t ibin=1; ibin<=h_loose_data->GetNbinsX(); ibin++) {
 
-	printf(" [%.0f,%.0f]      %5.0f  %.3f |       %5.0f  %.3f\n",
-	       h_loose_wjets->GetBinLowEdge(ibin),
-	       h_loose_wjets->GetBinLowEdge(ibin+1),
-	       h_loose_wjets_raw->GetBinContent(ibin),
-	       h_loose_wjets->GetBinContent(ibin) / h_loose_wjets_raw->GetBinContent(ibin),
-	       h_tight_wjets_raw->GetBinContent(ibin),
-	       h_tight_wjets->GetBinContent(ibin) / h_tight_wjets_raw->GetBinContent(ibin));
+	printf(" [%.0f,%.0f]      %6.0f  %.3f |       %6.0f  %.3f\n",
+	       h_loose_zjets->GetBinLowEdge(ibin),
+	       h_loose_zjets->GetBinLowEdge(ibin+1),
+	       h_loose_zjets_raw->GetBinContent(ibin),
+	       h_loose_zjets->GetBinContent(ibin) / h_loose_zjets_raw->GetBinContent(ibin),
+	       h_tight_zjets_raw->GetBinContent(ibin),
+	       h_tight_zjets->GetBinContent(ibin) / h_tight_zjets_raw->GetBinContent(ibin));
       }
       
       printf("\n");
