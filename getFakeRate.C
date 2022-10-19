@@ -6,8 +6,7 @@ const Float_t muojetarray[njetet] = {10, 15, 20, 25, 30, 35, 45};
 const Float_t elejetarray[njetet] = {10, 15, 20, 25, 30, 35, 45};
 const Float_t colors     [njetet] = {kRed, kRed+1, kRed+2, kRed+3, kRed+4, kRed+5, kRed+6};
 
-const Float_t muoscale = -1.;
-const Float_t elescale = -1.;
+const Float_t lepscale = -1.;
 
 const Float_t year_lumi[4] = {
   19.5,  // 2016_HIPM
@@ -53,21 +52,23 @@ void     Cosmetics   (TH1D*       hist,
 
 void     DrawAllJetEt(TString     flavour,
 		      TString     variable,
-		      TString     xtitle,
-		      Float_t     lepscale);
+		      TString     xtitle);
 
 void     DrawFR      (TString     flavour,
 		      TString     variable,
 		      TString     xtitle,
-		      Float_t     lepscale,
 		      Float_t     jetet);
 
 void     DrawPR      (TString     flavour,
 		      TString     variable,
 		      TString     xtitle);
 
+void     DrawDataMC  (TString     flavour,
+		      TString     variable,
+		      TString     xtitle,
+		      Float_t     jetet);
+
 void     WriteFR     (TString     flavour,
-		      Float_t     lepscale,
 		      Float_t     jetet);
 
 void     WritePR     (TString     flavour);
@@ -167,18 +168,20 @@ void getFakeRate(TString the_year      = "2016_HIPM",
   //----------------------------------------------------------------------------
   if (the_elejetet > 0) {
 
-    WriteFR("Ele", elescale, the_elejetet);
+    WriteFR("Ele", the_elejetet);
 
-    DrawFR("Ele", "pt",  "p_{T} [GeV]", elescale, the_elejetet);
-    DrawFR("Ele", "eta", "|#eta|",      elescale, the_elejetet);
+    DrawFR("Ele", "pt",  "p_{T} [GeV]", the_elejetet);
+    DrawFR("Ele", "eta", "|#eta|",      the_elejetet);
+
+    DrawDataMC("Ele", "m2l", "m2l", the_elejetet);  // EMPTY ///////////////////
   }
   else {
     for (Int_t i=0; i<njetet; i++) {
 
-      WriteFR("Ele", elescale, elejetarray[i]);
+      WriteFR("Ele", elejetarray[i]);
 
-      DrawFR("Ele", "pt",  "p_{T} [GeV]", elescale, elejetarray[i]);
-      DrawFR("Ele", "eta", "|#eta|",      elescale, elejetarray[i]);
+      DrawFR("Ele", "pt",  "p_{T} [GeV]", elejetarray[i]);
+      DrawFR("Ele", "eta", "|#eta|",      elejetarray[i]);
     }
   }
 
@@ -187,18 +190,20 @@ void getFakeRate(TString the_year      = "2016_HIPM",
   //----------------------------------------------------------------------------
   if (the_muojetet > 0) {
 
-    WriteFR("Muon", muoscale, the_muojetet);
+    WriteFR("Muon", the_muojetet);
 
-    DrawFR("Muon", "pt",  "p_{T} [GeV]", muoscale, the_muojetet);
-    DrawFR("Muon", "eta", "|#eta|",      muoscale, the_muojetet);
+    DrawFR("Muon", "pt",  "p_{T} [GeV]", the_muojetet);
+    DrawFR("Muon", "eta", "|#eta|",      the_muojetet);
+
+    DrawDataMC("Muon", "m2l", "m2l", the_muojetet);  // EMPTY //////////////////
   }
   else {
     for (Int_t i=0; i<njetet; i++) {
 
-      WriteFR("Muon", muoscale, muojetarray[i]);
+      WriteFR("Muon", muojetarray[i]);
       
-      DrawFR("Muon", "pt",  "p_{T} [GeV]", muoscale, muojetarray[i]);
-      DrawFR("Muon", "eta", "|#eta|",      muoscale, muojetarray[i]);
+      DrawFR("Muon", "pt",  "p_{T} [GeV]", muojetarray[i]);
+      DrawFR("Muon", "eta", "|#eta|",      muojetarray[i]);
     }
   }
 
@@ -207,10 +212,10 @@ void getFakeRate(TString the_year      = "2016_HIPM",
   //----------------------------------------------------------------------------
   if (the_elejetet < 0 && the_muojetet < 0) {
   
-    DrawAllJetEt("Ele",  "pt",  "p_{T} [GeV]", elescale);
-    DrawAllJetEt("Muon", "pt",  "p_{T} [GeV]", muoscale);
-    DrawAllJetEt("Ele",  "eta", "|#eta|",      elescale);
-    DrawAllJetEt("Muon", "eta", "|#eta|",      muoscale);
+    DrawAllJetEt("Ele",  "pt",  "p_{T} [GeV]");
+    DrawAllJetEt("Muon", "pt",  "p_{T} [GeV]");
+    DrawAllJetEt("Ele",  "eta", "|#eta|");
+    DrawAllJetEt("Muon", "eta", "|#eta|");
   }
 }
 
@@ -220,8 +225,7 @@ void getFakeRate(TString the_year      = "2016_HIPM",
 //------------------------------------------------------------------------------
 void DrawAllJetEt(TString flavour,
 		  TString variable,
-		  TString xtitle,
-		  Float_t lepscale)
+		  TString xtitle)
 {
   Float_t jetet;
 
@@ -287,7 +291,6 @@ void DrawAllJetEt(TString flavour,
 void DrawFR(TString flavour,
 	    TString variable,
 	    TString xtitle,
-	    Float_t lepscale,
 	    Float_t jetet)
 {
   TString suffix = Form("%s_bin_%.0fGeV", variable.Data(), jetet);
@@ -500,10 +503,52 @@ void DrawPR(TString flavour,
 
 
 //------------------------------------------------------------------------------
+// DrawDataMC
+//------------------------------------------------------------------------------
+void DrawDataMC(TString flavour,
+		TString variable,
+		TString xtitle,
+		Float_t jetet)
+{
+  TString suffix = Form("%s_%.0fGeV", variable.Data(), jetet);
+
+  TH1D* h_data  = (TH1D*)dataFR ->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix);
+  TH1D* h_zjets = (TH1D*)zjetsFR->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix);
+  TH1D* h_wjets = (TH1D*)wjetsFR->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix);
+
+
+  // Debug
+  //----------------------------------------------------------------------------
+  if (debug)
+    {
+      printf("\n   data entries: %f\n Z+jets entries: %f\n W+jets entries: %f\n\n",
+	     h_data->GetEntries(),
+	     h_zjets->GetEntries(),
+	     h_wjets->GetEntries());
+    }
+
+
+  // Draw
+  //----------------------------------------------------------------------------
+  TString title = Form("%s data vs. MC when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
+
+  TCanvas* canvas = new TCanvas(title + " " + variable, title + " " + variable);
+      
+  Cosmetics(h_data,  "ep",     xtitle, title, kBlack);
+  Cosmetics(h_zjets, "h,same", xtitle, title, kGreen);
+  Cosmetics(h_wjets, "h,same", xtitle, title, kBlue);
+
+
+  // Save
+  //----------------------------------------------------------------------------
+  canvas->SaveAs(Form("%s/%s_dataMC_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
+}
+
+
+//------------------------------------------------------------------------------
 // WriteFR
 //------------------------------------------------------------------------------
 void WriteFR(TString flavour,
-	     Float_t lepscale,
 	     Float_t jetet)
 {
   TString suffix = Form("pt_eta_bin_%.0fGeV", jetet);
