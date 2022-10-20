@@ -15,10 +15,17 @@ const Float_t year_lumi[4] = {
   59.7   // 2018
 };
 
+const TString year_name[4] = {
+  "2016_HIPM",
+  "2016_noHIPM",
+  "2017",
+  "2018"
+};
+
 
 // Data members
 //------------------------------------------------------------------------------
-bool    debug        = true;
+bool    debug        = false;
 bool    setgrid      = true;
 bool    Wsubtraction = true;
 bool    Zsubtraction = true;
@@ -66,6 +73,7 @@ void     DrawPR      (TString     flavour,
 void     DrawDataMC  (TString     flavour,
 		      TString     variable,
 		      TString     xtitle,
+		      TString     units,
 		      Float_t     jetet);
 
 void     WriteFR     (TString     flavour,
@@ -173,7 +181,7 @@ void getFakeRate(TString the_year      = "2016_HIPM",
     DrawFR("Ele", "pt",  "p_{T} [GeV]", the_elejetet);
     DrawFR("Ele", "eta", "|#eta|",      the_elejetet);
 
-    DrawDataMC("Ele", "m2l", "m2l", the_elejetet);  // EMPTY ///////////////////
+    DrawDataMC("Ele", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
   }
   else {
     for (Int_t i=0; i<njetet; i++) {
@@ -195,7 +203,7 @@ void getFakeRate(TString the_year      = "2016_HIPM",
     DrawFR("Muon", "pt",  "p_{T} [GeV]", the_muojetet);
     DrawFR("Muon", "eta", "|#eta|",      the_muojetet);
 
-    DrawDataMC("Muon", "m2l", "m2l", the_muojetet);  // EMPTY //////////////////
+    DrawDataMC("Muon", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
   }
   else {
     for (Int_t i=0; i<njetet; i++) {
@@ -508,40 +516,83 @@ void DrawPR(TString flavour,
 void DrawDataMC(TString flavour,
 		TString variable,
 		TString xtitle,
+		TString units,
 		Float_t jetet)
 {
+  TString loose_tight = "loose";
+
   TString suffix = Form("%s_%.0fGeV", variable.Data(), jetet);
 
-  TH1D* h_data  = (TH1D*)dataFR ->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix);
-  TH1D* h_zjets = (TH1D*)zjetsFR->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix);
-  TH1D* h_wjets = (TH1D*)wjetsFR->Get(btagdir + "FR/00_QCD/h_" + flavour + "_tight_" + suffix);
+  TH1D* h_data  = (TH1D*)dataFR ->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
+  TH1D* h_zjets = (TH1D*)zjetsFR->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
+  TH1D* h_wjets = (TH1D*)wjetsFR->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
 
-
-  // Debug
-  //----------------------------------------------------------------------------
-  if (debug)
-    {
-      printf("\n   data entries: %f\n Z+jets entries: %f\n W+jets entries: %f\n\n",
-	     h_data->GetEntries(),
-	     h_zjets->GetEntries(),
-	     h_wjets->GetEntries());
-    }
+  h_data ->Rebin(5);
+  h_zjets->Rebin(5);
+  h_wjets->Rebin(5);
 
 
   // Draw
   //----------------------------------------------------------------------------
+  TString lepton_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
+
   TString title = Form("%s data vs. MC when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
 
   TCanvas* canvas = new TCanvas(title + " " + variable, title + " " + variable);
-      
-  Cosmetics(h_data,  "ep",     xtitle, title, kBlack);
-  Cosmetics(h_zjets, "h,same", xtitle, title, kGreen);
-  Cosmetics(h_wjets, "h,same", xtitle, title, kBlue);
+
+
+  // Set xtitle and ytitle
+  //----------------------------------------------------------------------------
+  TString ytitle = (flavour.EqualTo("Muon")) ? "muons" : "electrons";
+
+  ytitle = "events with " + loose_tight + " " + ytitle;
+
+  Int_t precision = 0;
+
+  if (precision > -1) ytitle = Form("%s / %s.%df", ytitle.Data(), "%", precision);
+
+  ytitle = Form(ytitle.Data(), h_data->GetBinWidth(0));
+
+  if (!units.Contains("NULL")) {
+    xtitle = Form("%s [%s]", xtitle.Data(), units.Data());
+    ytitle = Form("%s %s",   ytitle.Data(), units.Data());
+  }
+
+
+  h_data->SetMarkerColor(kBlack);
+  h_data->SetMarkerStyle(kFullCircle);
+
+  h_zjets->SetLineColor(kGreen+2);
+  h_zjets->SetFillColor(kGreen+2);
+  h_zjets->SetFillStyle(1001);
+
+  h_wjets->SetLineColor(kGray+1);
+  h_wjets->SetFillColor(kGray+1);
+  h_wjets->SetFillStyle(1001);
+
+  h_zjets->SetTitle("");
+  h_zjets->SetXTitle(xtitle);
+  h_zjets->SetYTitle(ytitle);
+
+  h_zjets->GetXaxis()->SetRangeUser(50., 130.);
+  h_zjets->GetXaxis()->SetTitleOffset(1.5);
+  h_zjets->GetYaxis()->SetTitleOffset(1.8);
+
+  h_zjets->Draw("hist");
+  h_data ->Draw("ep,same");
+  h_wjets->Draw("ep,same");
+
+  DrawLatex(42, 0.940, 0.945, 0.035, 31, year_name[year_index] + " " + lepton_wp);
 
 
   // Save
   //----------------------------------------------------------------------------
-  canvas->SaveAs(Form("%s/%s_dataMC_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
+  canvas->SaveAs(Form("%s/%s_%s_dataMC_%s_%.0fGeV.png",
+		      pngdir.Data(),
+		      flavour.Data(),
+		      loose_tight.Data(),
+		      variable.Data(),
+		      jetet));
 }
 
 
@@ -589,12 +640,11 @@ void WriteFR(TString flavour,
 
   // Write
   //----------------------------------------------------------------------------
-  TString outputdir_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
+  TString lepton_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
-  outputdir_wp = outputdir + "/" + outputdir_wp;
-
-  TFile *file = new TFile(Form("%s/%sFR_jet%0.f.root",
-			       outputdir_wp.Data(),
+  TFile *file = new TFile(Form("%s/%s/%sFR_jet%0.f.root",
+			       outputdir.Data(),
+			       lepton_wp.Data(),
 			       flavour.Data(),
 			       jetet),
 			  "recreate");
@@ -616,9 +666,7 @@ void WriteFR(TString flavour,
 //------------------------------------------------------------------------------
 void WritePR(TString flavour)
 {
-  TString outputdir_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
-
-  outputdir_wp = outputdir + "/" + outputdir_wp;
+  TString lepton_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
   TH2D* h_loose_zjets = (TH2D*)zjetsPR->Get("PR/00/h_" + flavour + "_loose_pt_eta_PR");
   TH2D* h_tight_zjets = (TH2D*)zjetsPR->Get("PR/00/h_" + flavour + "_tight_pt_eta_PR");
@@ -630,8 +678,9 @@ void WritePR(TString flavour)
 
   // Write
   //----------------------------------------------------------------------------
-  TFile* file = new TFile(Form("%s/%sPR.root",
-			       outputdir_wp.Data(),
+  TFile* file = new TFile(Form("%s/%s/%sPR.root",
+			       outputdir.Data(),
+			       lepton_wp.Data(),
 			       flavour.Data()),
 			  "recreate");
 
