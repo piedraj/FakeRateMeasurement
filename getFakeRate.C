@@ -614,7 +614,7 @@ void DrawDataMC(TString flavour,
 
   DrawLatex(42, 0.940, 0.945, 0.035, 31, year_name[year_index] + " " + lepton_wp);
 
-  DrawLatex(42, 0.905, 0.845, 0.035, 31, Form("data / Z+jets = %.2f", ratio));
+  DrawLatex(42, 0.905, 0.845, 0.035, 31, Form("data / Z+jets = %.3f", ratio));
 
 
   // Save
