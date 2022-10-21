@@ -25,10 +25,16 @@ const TString year_name[4] = {
 
 // Data members
 //------------------------------------------------------------------------------
-bool    debug        = false;
-bool    setgrid      = true;
-bool    Wsubtraction = true;
-bool    Zsubtraction = true;
+Bool_t  debug        = false;
+Bool_t  setgrid      = true;
+Bool_t  Wsubtraction = true;
+Bool_t  Zsubtraction = true;
+
+Bool_t  performPromptRate       = false;
+Bool_t  performElectronFakeRate = false;
+Bool_t  performMuonFakeRate     = false;
+Bool_t  performAllJetFakeRate   = false;
+Bool_t  performDataMC           = true;
 
 TFile*  dataFR;
 TFile*  wjetsFR;
@@ -71,6 +77,7 @@ void     DrawPR      (TString     flavour,
 		      TString     xtitle);
 
 void     DrawDataMC  (TString     flavour,
+		      TString     loose_tight,
 		      TString     variable,
 		      TString     xtitle,
 		      TString     units,
@@ -104,7 +111,7 @@ TLegend* DrawLegend  (Float_t     x1,
 // getFakeRate
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void getFakeRate(TString the_year      = "2016_HIPM",
+void getFakeRate(TString the_year      = "2016_noHIPM",
 		 TString the_leptondir = "cut_Tight80x__mvaFall17V2Iso_WP90_tthmva_70",
 		 Float_t the_elejetet  = 35,
 		 Float_t the_muojetet  = 25)
@@ -163,68 +170,87 @@ void getFakeRate(TString the_year      = "2016_HIPM",
 
   // Prompt rate
   //----------------------------------------------------------------------------
-  WritePR("Ele");
-  WritePR("Muon");
+  if (performPromptRate)
+    {
+      WritePR("Ele");
+      WritePR("Muon");
 
-  DrawPR("Ele",  "pt",  "p_{T} [GeV]");
-  DrawPR("Muon", "pt",  "p_{T} [GeV]");
-  DrawPR("Ele",  "eta", "|#eta|");
-  DrawPR("Muon", "eta", "|#eta|");
+      DrawPR("Ele",  "pt",  "p_{T} [GeV]");
+      DrawPR("Muon", "pt",  "p_{T} [GeV]");
+      DrawPR("Ele",  "eta", "|#eta|");
+      DrawPR("Muon", "eta", "|#eta|");
+    }
 
 
   // Electron fake rate
   //----------------------------------------------------------------------------
-  if (the_elejetet > 0) {
+  if (performElectronFakeRate)
+    {
+      if (the_elejetet > 0) {
 
-    WriteFR("Ele", the_elejetet);
+	WriteFR("Ele", the_elejetet);
 
-    DrawFR("Ele", "pt",  "p_{T} [GeV]", the_elejetet);
-    DrawFR("Ele", "eta", "|#eta|",      the_elejetet);
+	DrawFR("Ele", "pt",  "p_{T} [GeV]", the_elejetet);
+	DrawFR("Ele", "eta", "|#eta|",      the_elejetet);
+      }
+      else {
+	for (Int_t i=0; i<njetet; i++) {
 
-    DrawDataMC("Ele", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
-  }
-  else {
-    for (Int_t i=0; i<njetet; i++) {
+	  WriteFR("Ele", elejetarray[i]);
 
-      WriteFR("Ele", elejetarray[i]);
-
-      DrawFR("Ele", "pt",  "p_{T} [GeV]", elejetarray[i]);
-      DrawFR("Ele", "eta", "|#eta|",      elejetarray[i]);
+	  DrawFR("Ele", "pt",  "p_{T} [GeV]", elejetarray[i]);
+	  DrawFR("Ele", "eta", "|#eta|",      elejetarray[i]);
+	}
+      }
     }
-  }
 
 
   // Muon fake rate
   //----------------------------------------------------------------------------
-  if (the_muojetet > 0) {
+  if (performMuonFakeRate)
+    {
+      if (the_muojetet > 0) {
 
-    WriteFR("Muon", the_muojetet);
+	WriteFR("Muon", the_muojetet);
 
-    DrawFR("Muon", "pt",  "p_{T} [GeV]", the_muojetet);
-    DrawFR("Muon", "eta", "|#eta|",      the_muojetet);
+	DrawFR("Muon", "pt",  "p_{T} [GeV]", the_muojetet);
+	DrawFR("Muon", "eta", "|#eta|",      the_muojetet);
+      }
+      else {
+	for (Int_t i=0; i<njetet; i++) {
 
-    DrawDataMC("Muon", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
-  }
-  else {
-    for (Int_t i=0; i<njetet; i++) {
-
-      WriteFR("Muon", muojetarray[i]);
+	  WriteFR("Muon", muojetarray[i]);
       
-      DrawFR("Muon", "pt",  "p_{T} [GeV]", muojetarray[i]);
-      DrawFR("Muon", "eta", "|#eta|",      muojetarray[i]);
+	  DrawFR("Muon", "pt",  "p_{T} [GeV]", muojetarray[i]);
+	  DrawFR("Muon", "eta", "|#eta|",      muojetarray[i]);
+	}
+      }
     }
-  }
 
 
-  // Draw all fake rates together
+  // All fake rates together
   //----------------------------------------------------------------------------
-  if (the_elejetet < 0 && the_muojetet < 0) {
+  if (performAllJetFakeRate)
+    {
+      if (the_elejetet < 0 && the_muojetet < 0) {
   
-    DrawAllJetEt("Ele",  "pt",  "p_{T} [GeV]");
-    DrawAllJetEt("Muon", "pt",  "p_{T} [GeV]");
-    DrawAllJetEt("Ele",  "eta", "|#eta|");
-    DrawAllJetEt("Muon", "eta", "|#eta|");
-  }
+	DrawAllJetEt("Ele",  "pt",  "p_{T} [GeV]");
+	DrawAllJetEt("Muon", "pt",  "p_{T} [GeV]");
+	DrawAllJetEt("Ele",  "eta", "|#eta|");
+	DrawAllJetEt("Muon", "eta", "|#eta|");
+      }
+    }
+
+
+  // Data vs. MC
+  //----------------------------------------------------------------------------
+  if (performDataMC && the_elejetet > 0 && the_muojetet > 0)
+    {
+      DrawDataMC("Ele",  "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
+      DrawDataMC("Ele",  "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
+      DrawDataMC("Muon", "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
+      DrawDataMC("Muon", "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
+    }
 }
 
 
@@ -514,13 +540,12 @@ void DrawPR(TString flavour,
 // DrawDataMC
 //------------------------------------------------------------------------------
 void DrawDataMC(TString flavour,
+		TString loose_tight,
 		TString variable,
 		TString xtitle,
 		TString units,
 		Float_t jetet)
 {
-  TString loose_tight = "loose";
-
   TString suffix = Form("%s_%.0fGeV", variable.Data(), jetet);
 
   TH1D* h_data  = (TH1D*)dataFR ->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
@@ -536,7 +561,7 @@ void DrawDataMC(TString flavour,
   //----------------------------------------------------------------------------
   TString lepton_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
-  TString title = Form("%s data vs. MC when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
+  TString title = Form("%s %s %s when jet p_{T} > %.0f GeV", flavour.Data(), loose_tight.Data(), variable.Data(), jetet);
 
   TCanvas* canvas = new TCanvas(title + " " + variable, title + " " + variable);
 
@@ -559,6 +584,7 @@ void DrawDataMC(TString flavour,
   }
 
 
+  h_data->SetLineColor(kBlack);
   h_data->SetMarkerColor(kBlack);
   h_data->SetMarkerStyle(kFullCircle);
 
@@ -582,12 +608,18 @@ void DrawDataMC(TString flavour,
   h_data ->Draw("ep,same");
   h_wjets->Draw("ep,same");
 
+  Float_t ratio = 1.0;
+
+  if (h_zjets->Integral() > 0.) ratio = h_data->Integral() / h_zjets->Integral();
+
   DrawLatex(42, 0.940, 0.945, 0.035, 31, year_name[year_index] + " " + lepton_wp);
+
+  DrawLatex(42, 0.905, 0.845, 0.035, 31, Form("data / Z+jets = %.2f", ratio));
 
 
   // Save
   //----------------------------------------------------------------------------
-  canvas->SaveAs(Form("%s/%s_%s_dataMC_%s_%.0fGeV.png",
+  canvas->SaveAs(Form("%s/%s_%s_%s_%.0fGeV.png",
 		      pngdir.Data(),
 		      flavour.Data(),
 		      loose_tight.Data(),
