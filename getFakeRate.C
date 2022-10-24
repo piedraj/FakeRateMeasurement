@@ -6,8 +6,6 @@ const Float_t muojetarray[njetet] = {10, 15, 20, 25, 30, 35, 45};
 const Float_t elejetarray[njetet] = {10, 15, 20, 25, 30, 35, 45};
 const Float_t colors     [njetet] = {kRed, kRed+1, kRed+2, kRed+3, kRed+4, kRed+5, kRed+6};
 
-const Float_t lepscale = -1.;
-
 const Float_t year_lumi[4] = {
   19.5,  // 2016_HIPM
   17.0,  // 2016_noHIPM
@@ -25,16 +23,18 @@ const TString year_name[4] = {
 
 // Data members
 //------------------------------------------------------------------------------
+Float_t global_lepscale = -1.;
+
 Bool_t  debug        = false;
 Bool_t  setgrid      = true;
 Bool_t  Wsubtraction = true;
 Bool_t  Zsubtraction = true;
 
-Bool_t  performPromptRate       = false;
-Bool_t  performElectronFakeRate = false;
-Bool_t  performMuonFakeRate     = false;
+Bool_t  performPromptRate       = true;
+Bool_t  performElectronFakeRate = true;
+Bool_t  performMuonFakeRate     = true;
 Bool_t  performAllJetFakeRate   = false;
-Bool_t  performDataMC           = true;
+Bool_t  performDataMC           = false;
 
 TFile*  dataFR;
 TFile*  wjetsFR;
@@ -76,7 +76,7 @@ void     DrawPR      (TString     flavour,
 		      TString     variable,
 		      TString     xtitle);
 
-void     DrawDataMC  (TString     flavour,
+Float_t  GetLepScale (TString     flavour,
 		      TString     loose_tight,
 		      TString     variable,
 		      TString     xtitle,
@@ -188,10 +188,14 @@ void getFakeRate(TString the_year      = "2016_HIPM",
     {
       if (the_elejetet > 0) {
 
+	global_lepscale = GetLepScale("Ele", "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
+
 	WriteFR("Ele", the_elejetet);
 
 	DrawFR("Ele", "pt",  "p_{T} [GeV]", the_elejetet);
 	DrawFR("Ele", "eta", "|#eta|",      the_elejetet);
+
+	global_lepscale = -1.;
       }
       else {
 	for (Int_t i=0; i<njetet; i++) {
@@ -211,10 +215,14 @@ void getFakeRate(TString the_year      = "2016_HIPM",
     {
       if (the_muojetet > 0) {
 
+	global_lepscale = GetLepScale("Muon", "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
+
 	WriteFR("Muon", the_muojetet);
 
 	DrawFR("Muon", "pt",  "p_{T} [GeV]", the_muojetet);
 	DrawFR("Muon", "eta", "|#eta|",      the_muojetet);
+
+	global_lepscale = -1.;
       }
       else {
 	for (Int_t i=0; i<njetet; i++) {
@@ -246,10 +254,10 @@ void getFakeRate(TString the_year      = "2016_HIPM",
   //----------------------------------------------------------------------------
   if (performDataMC && the_elejetet > 0 && the_muojetet > 0)
     {
-      DrawDataMC("Ele",  "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
-      DrawDataMC("Ele",  "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
-      DrawDataMC("Muon", "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
-      DrawDataMC("Muon", "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
+      GetLepScale("Ele",  "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
+      GetLepScale("Ele",  "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
+      GetLepScale("Muon", "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
+      GetLepScale("Muon", "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
     }
 }
 
@@ -296,11 +304,11 @@ void DrawAllJetEt(TString flavour,
 
     // Do the math
     //--------------------------------------------------------------------------
-    if (Zsubtraction) h_FR_EWK->Add(h_tight_zjets, lepscale);
-    if (Wsubtraction) h_FR_EWK->Add(h_tight_wjets, lepscale);
+    if (Zsubtraction) h_FR_EWK->Add(h_tight_zjets, global_lepscale);
+    if (Wsubtraction) h_FR_EWK->Add(h_tight_wjets, global_lepscale);
     
-    if (Zsubtraction) h_FR_EWK_denominator->Add(h_loose_zjets, lepscale);
-    if (Wsubtraction) h_FR_EWK_denominator->Add(h_loose_wjets, lepscale);
+    if (Zsubtraction) h_FR_EWK_denominator->Add(h_loose_zjets, global_lepscale);
+    if (Wsubtraction) h_FR_EWK_denominator->Add(h_loose_wjets, global_lepscale);
     
     h_FR_EWK->Divide(h_FR_EWK_denominator);
 
@@ -400,11 +408,11 @@ void DrawFR(TString flavour,
   //----------------------------------------------------------------------------
   h_FR->Divide(h_FR_denominator);
 
-  if (Zsubtraction) h_FR_EWK->Add(h_tight_zjets, lepscale);
-  if (Wsubtraction) h_FR_EWK->Add(h_tight_wjets, lepscale);
+  if (Zsubtraction) h_FR_EWK->Add(h_tight_zjets, global_lepscale);
+  if (Wsubtraction) h_FR_EWK->Add(h_tight_wjets, global_lepscale);
 
-  if (Zsubtraction) h_FR_EWK_denominator->Add(h_loose_zjets, lepscale);
-  if (Wsubtraction) h_FR_EWK_denominator->Add(h_loose_wjets, lepscale);
+  if (Zsubtraction) h_FR_EWK_denominator->Add(h_loose_zjets, global_lepscale);
+  if (Wsubtraction) h_FR_EWK_denominator->Add(h_loose_wjets, global_lepscale);
 
   h_FR_EWK->Divide(h_FR_EWK_denominator);
 
@@ -537,15 +545,17 @@ void DrawPR(TString flavour,
 
 
 //------------------------------------------------------------------------------
-// DrawDataMC
+// GetLepScale
 //------------------------------------------------------------------------------
-void DrawDataMC(TString flavour,
-		TString loose_tight,
-		TString variable,
-		TString xtitle,
-		TString units,
-		Float_t jetet)
+Float_t GetLepScale(TString flavour,
+		    TString loose_tight,
+		    TString variable,
+		    TString xtitle,
+		    TString units,
+		    Float_t jetet)
 {
+  Float_t lepscale = -1.;
+
   TString suffix = Form("%s_%.0fGeV", variable.Data(), jetet);
 
   TH1D* h_data  = (TH1D*)dataFR ->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
@@ -625,6 +635,15 @@ void DrawDataMC(TString flavour,
 		      loose_tight.Data(),
 		      variable.Data(),
 		      jetet));
+
+
+  // Return the lepton scale
+  //----------------------------------------------------------------------------
+  lepscale *= ratio;
+
+  printf("\n The %s data/MC lepton scale is %.3f\n\n", flavour.Data(), lepscale);
+
+  return lepscale;
 }
 
 
@@ -661,11 +680,11 @@ void WriteFR(TString flavour,
   //----------------------------------------------------------------------------
   h_FR->Divide(h_FR_numerator, h_FR_denominator);
 
-  if (Zsubtraction) h_FR_EWK_numerator->Add(h_tight_zjets, lepscale);
-  if (Wsubtraction) h_FR_EWK_numerator->Add(h_tight_wjets, lepscale);
+  if (Zsubtraction) h_FR_EWK_numerator->Add(h_tight_zjets, global_lepscale);
+  if (Wsubtraction) h_FR_EWK_numerator->Add(h_tight_wjets, global_lepscale);
 
-  if (Zsubtraction) h_FR_EWK_denominator->Add(h_loose_zjets, lepscale);
-  if (Wsubtraction) h_FR_EWK_denominator->Add(h_loose_wjets, lepscale);
+  if (Zsubtraction) h_FR_EWK_denominator->Add(h_loose_zjets, global_lepscale);
+  if (Wsubtraction) h_FR_EWK_denominator->Add(h_loose_wjets, global_lepscale);
 
   h_FR_EWK->Divide(h_FR_EWK_numerator, h_FR_EWK_denominator);
 
