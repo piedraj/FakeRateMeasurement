@@ -25,7 +25,7 @@ const TString year_name[4] = {
 //------------------------------------------------------------------------------
 Float_t lepscale = 1.;
 
-Bool_t  debug        = true;
+Bool_t  debug        = false;
 Bool_t  debugWeights = false;
 Bool_t  setgrid      = true;
 Bool_t  Wsubtraction = true;
@@ -116,11 +116,14 @@ TLegend* DrawLegend  (Float_t     x1,
 //    * lepscale is not applied in DrawAllJetEt;
 //    * lepscale is not applied in the debug histograms of DrawFR.
 //
+//    Float_t the_elejetet = 35
+//    Float_t the_muojetet = 25
+//
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void getFakeRate(TString the_year      = "2016_HIPM",
 		 TString the_leptondir = "cut_Tight80x__mvaFall17V2Iso_WP90_tthmva_70",
-		 Float_t the_elejetet  = 35,
-		 Float_t the_muojetet  = 25)
+		 Float_t the_elejetet  = -1,
+		 Float_t the_muojetet  = -1)
 {
   if (the_year == "1984") {
 
