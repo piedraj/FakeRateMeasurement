@@ -116,14 +116,14 @@ TLegend* DrawLegend  (Float_t     x1,
 //    * lepscale is not applied in DrawAllJetEt;
 //    * lepscale is not applied in the debug histograms of DrawFR.
 //
-//    Float_t the_elejetet = 35
-//    Float_t the_muojetet = 25
+//    Float_t the_elejetet = 35 | -1
+//    Float_t the_muojetet = 25 | -1
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void getFakeRate(TString the_year      = "2016_HIPM",
 		 TString the_leptondir = "cut_Tight80x__mvaFall17V2Iso_WP90_tthmva_70",
-		 Float_t the_elejetet  = -1,
-		 Float_t the_muojetet  = -1)
+		 Float_t the_elejetet  = 35,
+		 Float_t the_muojetet  = 25)
 {
   if (the_year == "1984") {
 
@@ -260,17 +260,6 @@ void getFakeRate(TString the_year      = "2016_HIPM",
 	DrawAllJetEt("Ele",  "eta", "|#eta|");
 	DrawAllJetEt("Muon", "eta", "|#eta|");
       }
-    }
-
-
-  // Data vs. MC
-  //----------------------------------------------------------------------------
-  if (performDataMC && the_elejetet > 0 && the_muojetet > 0)
-    {
-      GetLepScale("Ele",  "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
-      GetLepScale("Ele",  "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_elejetet);
-      GetLepScale("Muon", "loose", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
-      GetLepScale("Muon", "tight", "m2l", "m_{#font[12]{ll}}", "GeV", the_muojetet);
     }
 }
 
@@ -567,20 +556,27 @@ Float_t GetLepScale(TString flavour,
 		    TString units,
 		    Float_t jetet)
 {
+  Float_t ratio = 1.;
+
+  if (!performDataMC) return ratio;
+
   TString suffix = Form("%s_%.0fGeV", variable.Data(), jetet);
 
   TH1D* h_data  = (TH1D*)dataFR ->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
   TH1D* h_zjets = (TH1D*)zjetsFR->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
   TH1D* h_wjets = (TH1D*)wjetsFR->Get(btagdir + "FR/01_Zpeak/h_" + flavour + "_" + loose_tight + "_" + suffix);
 
+
+  // Get the ratio
+  //----------------------------------------------------------------------------
+  if (h_zjets->Integral() > 0.) ratio = h_data->Integral() / h_zjets->Integral();
+
+
+  // Rebin histograms and prepare canvas
+  //----------------------------------------------------------------------------
   h_data ->Rebin(5);
   h_zjets->Rebin(5);
   h_wjets->Rebin(5);
-
-
-  // Draw
-  //----------------------------------------------------------------------------
-  TString lepton_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
   TString title = Form("%s %s %s when jet p_{T} > %.0f GeV", flavour.Data(), loose_tight.Data(), variable.Data(), jetet);
 
@@ -605,6 +601,8 @@ Float_t GetLepScale(TString flavour,
   }
 
 
+  // Cosmetics
+  //----------------------------------------------------------------------------
   h_data->SetLineColor(kBlack);
   h_data->SetMarkerColor(kBlack);
   h_data->SetMarkerStyle(kFullCircle);
@@ -625,13 +623,14 @@ Float_t GetLepScale(TString flavour,
   h_zjets->GetXaxis()->SetTitleOffset(1.5);
   h_zjets->GetYaxis()->SetTitleOffset(1.8);
 
+
+  // Draw
+  //----------------------------------------------------------------------------
   h_zjets->Draw("hist");
   h_data ->Draw("ep,same");
   h_wjets->Draw("ep,same");
 
-  Float_t ratio = 1.;
-
-  if (h_zjets->Integral() > 0.) ratio = h_data->Integral() / h_zjets->Integral();
+  TString lepton_wp = (flavour.EqualTo("Muon")) ? muon_wp : ele_wp;
 
   DrawLatex(42, 0.940, 0.945, 0.035, 31, year_name[year_index] + " " + lepton_wp);
 
