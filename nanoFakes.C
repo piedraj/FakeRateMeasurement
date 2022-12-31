@@ -178,6 +178,19 @@ void nanoFakes::Begin(TTree*)
 	h_Muon_tight_pt_m2l[i][j][btag] = new TH2D("h_Muon_tight_pt_m2l" + muonsuffix, "", 200, 0, 200, nptbin, ptbins);
 	h_Ele_loose_pt_m2l [i][j][btag] = new TH2D("h_Ele_loose_pt_m2l"  + elesuffix,  "", 200, 0, 200, nptbin, ptbins);
 	h_Ele_tight_pt_m2l [i][j][btag] = new TH2D("h_Ele_tight_pt_m2l"  + elesuffix,  "", 200, 0, 200, nptbin, ptbins);
+
+
+	// Debug 2016_HIPM
+	//----------------------------------------------------------------------
+	h_Muon_loose_met [i][j][btag] = new TH1D("h_Muon_loose_met"  + muonsuffix, "", 1000, 0, 200);
+	h_Muon_loose_mtw1[i][j][btag] = new TH1D("h_Muon_loose_mtw1" + muonsuffix, "", 1000, 0, 200);
+	h_Muon_tight_met [i][j][btag] = new TH1D("h_Muon_tight_met"  + muonsuffix, "", 1000, 0, 200);
+	h_Muon_tight_mtw1[i][j][btag] = new TH1D("h_Muon_tight_mtw1" + muonsuffix, "", 1000, 0, 200);
+
+	h_Ele_loose_met [i][j][btag] = new TH1D("h_Ele_loose_met"  + elesuffix, "", 1000, 0, 200);
+	h_Ele_loose_mtw1[i][j][btag] = new TH1D("h_Ele_loose_mtw1" + elesuffix, "", 1000, 0, 200);
+	h_Ele_tight_met [i][j][btag] = new TH1D("h_Ele_tight_met"  + elesuffix, "", 1000, 0, 200);
+	h_Ele_tight_mtw1[i][j][btag] = new TH1D("h_Ele_tight_mtw1" + elesuffix, "", 1000, 0, 200);
       }	
     }
   }
@@ -325,7 +338,7 @@ Bool_t nanoFakes::Process(Long64_t entry)
 
   if (ismc) event_weight = (*baseW/1e3) * (*puWeight) * (*Generator_weight);
 
-  if (event_weight > 2.) return kTRUE;  // Debug
+  if (event_weight > 2.) return kTRUE;  // Remove events with large weight
 
   if (ismc) {
 
@@ -420,6 +433,34 @@ Bool_t nanoFakes::Process(Long64_t entry)
       }
 
       bool passJets = (jetIndex != -1);
+
+
+      // Debug 2016_HIPM - Muons
+      //------------------------------------------------------------------------
+      if ((channel == m) && (*nLepton == 1) && passJets && passTrigger) {
+
+	h_Muon_loose_met [FR_02_Debug][i][0]->Fill(*PuppiMET_pt, event_weight);
+	h_Muon_loose_mtw1[FR_02_Debug][i][0]->Fill(*mtw1,        event_weight);
+
+	if (muonTightWP[0] > 0.5) {
+	  h_Muon_tight_met [FR_02_Debug][i][0]->Fill(*PuppiMET_pt, event_weight);
+	  h_Muon_tight_mtw1[FR_02_Debug][i][0]->Fill(*mtw1,        event_weight);
+	}
+      }
+
+
+      // Debug 2016_HIPM - Electrons
+      //------------------------------------------------------------------------
+      if ((channel == e) && (*nLepton == 1) && passJets && passTrigger) {
+
+	h_Ele_loose_met [FR_02_Debug][i][0]->Fill(*PuppiMET_pt, event_weight);
+	h_Ele_loose_mtw1[FR_02_Debug][i][0]->Fill(*mtw1,        event_weight);
+
+	if (eleTightWP[0] > 0.5) {
+	  h_Ele_tight_met [FR_02_Debug][i][0]->Fill(*PuppiMET_pt, event_weight);
+	  h_Ele_tight_mtw1[FR_02_Debug][i][0]->Fill(*mtw1,        event_weight);
+	}
+      }
 
 
       // QCD region

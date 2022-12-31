@@ -63,12 +63,14 @@ enum {Loose, Tight};
 enum {
   FR_00_QCD,
   FR_01_Zpeak,
+  FR_02_Debug,
   ncutFR
 };
 
 const TString scutFR[ncutFR] = {
   "FR/00_QCD",
   "FR/01_Zpeak",
+  "FR/02_Debug"
 };
 
 enum {
@@ -135,6 +137,19 @@ class nanoFakes : public TSelector
   TH2D* h_Ele_tight_pt_m2l [ncutFR][njetet][nbtag];
 
 
+  // Debug 2016_HIPM
+  //----------------------------------------------------------------------------
+  TH1D* h_Muon_loose_met [ncutFR][njetet][nbtag];
+  TH1D* h_Muon_loose_mtw1[ncutFR][njetet][nbtag];
+  TH1D* h_Muon_tight_met [ncutFR][njetet][nbtag];
+  TH1D* h_Muon_tight_mtw1[ncutFR][njetet][nbtag];
+
+  TH1D* h_Ele_loose_met [ncutFR][njetet][nbtag];
+  TH1D* h_Ele_loose_mtw1[ncutFR][njetet][nbtag];
+  TH1D* h_Ele_tight_met [ncutFR][njetet][nbtag];
+  TH1D* h_Ele_tight_mtw1[ncutFR][njetet][nbtag];
+
+
   // Prompt rate histograms
   //----------------------------------------------------------------------------
   TH2D* h_Muon_loose_pt_eta_PR[ncutPR];
@@ -199,8 +214,8 @@ class nanoFakes : public TSelector
   //  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90"};
 
   // 2016 (pair 2)
-  //  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight80x"};
-  //  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90_tthmva_70"};
+  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight80x"};
+  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90_tthmva_70"};
 
   // 2016 (pair 3)
   //  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight80x_tthmva_80"};
@@ -211,8 +226,8 @@ class nanoFakes : public TSelector
   //  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90_SS"};
 
   // 2017 and 2018 (pair 1)
-  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight_HWWW_tthmva_80"};
-  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90"};
+  //  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight_HWWW_tthmva_80"};
+  //  TTreeReaderArray<Int_t> eleTightWP  = {fReader, "Lepton_isTightElectron_mvaFall17V2Iso_WP90"};
 
   // 2017 and 2018 (pair 2)
   //  TTreeReaderArray<Int_t> muonTightWP = {fReader, "Lepton_isTightMuon_cut_Tight_HWWW"};
