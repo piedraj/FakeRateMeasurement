@@ -103,16 +103,16 @@ Move the merged files to their corresponding year directory.
 
 # Share on the web
 
-    cp -r png /afs/cern.ch/user/p/piedra/www/fakerate
+    cp -r png /afs/cern.ch/user/p/piedra/www/ul_fakerate
 
-    pushd /afs/cern.ch/user/p/piedra/www/fakerate
+    pushd /afs/cern.ch/user/p/piedra/www/ul_fakerate
     cp ../index.php .
     find . -type d -exec cp index.php {} \;
     popd
 
-And the results should appear [here](https://piedra.web.cern.ch/piedra/fakerate),
+And the results should appear [here](https://piedra.web.cern.ch/piedra/ul_fakerate),
 
-    https://piedra.web.cern.ch/piedra/fakerate
+    https://piedra.web.cern.ch/piedra/ul_fakerate
 
 # Some relevant physics
 
