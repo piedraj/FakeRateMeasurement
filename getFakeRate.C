@@ -121,7 +121,7 @@ TLegend* DrawLegend  (Float_t     x1,
 //
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void getFakeRate(TString the_year      = "2016_HIPM",
-		 TString the_leptondir = "cut_Tight80x__mvaFall17V2Iso_WP90_tthmva_70",
+		 TString the_leptondir = "cut_Tight80x_tthmva_80__mvaFall17V2Iso_WP90",
 		 Float_t the_elejetet  = 35,
 		 Float_t the_muojetet  = 25)
 {
