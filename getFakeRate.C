@@ -439,9 +439,6 @@ void DrawFR(TString flavour,
   canvas1->SaveAs(Form("%s/%s_FR_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
 
 
-  if (!debug) return;
-
-
   // Draw EWK correction
   //----------------------------------------------------------------------------
   TString title2 = Form("%s EWK correction when jet p_{T} > %.0f GeV", flavour.Data(), jetet);
@@ -460,6 +457,9 @@ void DrawFR(TString flavour,
   DrawLatex(42, 0.940, 0.945, 0.045, 31, Form("%.1f fb^{-1} (13 TeV)", year_lumi[year_index]));
 
   canvas2->SaveAs(Form("%s/%s_EWKrel_%s_%.0fGeV.png", pngdir.Data(), flavour.Data(), variable.Data(), jetet));
+
+
+  if (!debug) return;
 
 
   // Draw tight histograms
