@@ -17,12 +17,10 @@ std::string to_string(int i)
 }
 
 
-void runNanoFakes(TString year = "2017", TString filename = "NONE")
+void runNanoFakes(TString year = "2018", TString filename = "NONE")
 {
   if (year == "2016_HIPM")
     {
-      //      path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_HIPM_Full2016v9/MCl1loose2016v9__fakeSelKinMC/";  // BUGGY
-      //      path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9__fakeSel/";        // BUGGY
       path_mc   = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Summer20UL16_106x_nAODv9_HIPM_Full2016v9/MCl1loose2016v9__MCCorr2016v9/";
       path_data = "/eos/cms/store/group/phys_higgs/cmshww/amassiro/HWWNano/Run2016_UL2016_nAODv9_HIPM_Full2016v9/DATAl1loose2016v9/";
     }
@@ -50,8 +48,8 @@ void runNanoFakes(TString year = "2017", TString filename = "NONE")
   if (filename.EqualTo("NONE"))
     {
       printf("\n Examples\n\n");
-      printf(" root -l -b -q \'runNanoFakes.C(\"%s\", \"nanoLatino_DoubleMuon_Run2017C-31Mar2018-v1__part0\")\'\n", year.Data());
-      printf(" root -l -b -q \'runNanoFakes.C(\"%s\", \"nanoLatino_SingleElectron_Run2017C-31Mar2018-v1__part0\")\'\n", year.Data());
+      printf(" root -l -b -q \'runNanoFakes.C(\"2017\", \"nanoLatino_DoubleMuon_Run2017C-UL2017-v1__part0\")\'\n");
+      printf(" root -l -b -q \'runNanoFakes.C(\"2017\", \"nanoLatino_SingleElectron_Run2017C-UL2017-v1__part0\")\'\n");
       printf(" root -l -b -q \'runNanoFakes.C(\"%s\", \"nanoLatino_WJetsToLNu-LO__part0\")\'\n", year.Data());
       printf(" root -l -b -q \'runNanoFakes.C(\"%s\", \"nanoLatino_DYJetsToLL_M-50__part0\")\'\n", year.Data());
       printf("\n");
